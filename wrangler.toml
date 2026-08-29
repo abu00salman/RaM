@@ -1,0 +1,14 @@
+name = "ram-store-api"
+main = "src/index.js"
+compatibility_date = "2026-08-01"
+
+[vars]
+ALLOWED_ORIGIN = "https://abu00salman.github.io"   # أصل موقع المتجر (بدون مسار). للتجربة المحلية أضف: ,http://localhost:8080
+SHIPPING = "15"
+FREE_SHIPPING_FROM = "250"
+
+# اختياري — لحفظ الطلبات:
+# [[d1_databases]]
+# binding = "DB"
+# database_name = "ram-store"
+# database_id = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"

@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RaM store — إكسسوارات تقنية</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@300;400;500;600;700&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --snow:#F3F5F9;
+  --ink:#0B0F1A;
+  --ink-2:#4A5163;
+  --ink-3:#8A90A0;
+  --marine:#2F6BFF;
+  --lilac:#B98CFF;
+  --mint:#56D6C2;
+  --amber:#FFB65C;
+  --glass:rgba(255,255,255,.52);
+  --glass-strong:rgba(255,255,255,.72);
+  --line:rgba(255,255,255,.75);
+  --line-dark:rgba(11,15,26,.08);
+  --shadow:0 24px 60px -24px rgba(20,30,70,.28), 0 2px 6px rgba(20,30,70,.06);
+  --r-xl:32px; --r-lg:24px; --r-md:18px; --r-pill:999px;
+  --display:"Alexandria",system-ui,sans-serif;
+  --body:"IBM Plex Sans Arabic",system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--body);color:var(--ink);background:var(--snow);
+  -webkit-font-smoothing:antialiased;line-height:1.6;overflow-x:hidden;
+}
+button,input{font:inherit;color:inherit}
+button{cursor:pointer;border:0;background:none}
+:focus-visible{outline:2px solid var(--marine);outline-offset:3px;border-radius:8px}
+img,svg{display:block}
+
+/* ---------- backdrop: orbs + engraved geometric pattern ---------- */
+.sky{position:fixed;inset:0;z-index:-1;overflow:hidden;background:var(--snow)}
+.orb{position:absolute;border-radius:50%;filter:blur(90px);opacity:.75;will-change:transform}
+.orb.a{width:62vmax;height:62vmax;background:var(--marine);top:-28vmax;right:-14vmax;opacity:.35;animation:drift 26s ease-in-out infinite alternate}
+.orb.b{width:50vmax;height:50vmax;background:var(--lilac);bottom:-20vmax;left:-12vmax;opacity:.5;animation:drift 32s ease-in-out infinite alternate-reverse}
+.orb.c{width:36vmax;height:36vmax;background:var(--mint);top:40vh;left:35vw;opacity:.35;animation:drift 38s ease-in-out infinite alternate}
+.orb.d{width:26vmax;height:26vmax;background:var(--amber);top:8vh;left:8vw;opacity:.28;animation:drift 22s ease-in-out infinite alternate-reverse}
+@keyframes drift{from{transform:translate(0,0) scale(1)}to{transform:translate(6vw,-5vh) scale(1.08)}}
+.pattern{position:absolute;inset:0;opacity:.09;mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cg fill='none' stroke='%230B0F1A' stroke-width='1'%3E%3Cpath d='M60 6 74 46 114 60 74 74 60 114 46 74 6 60 46 46Z'/%3E%3Cpath d='M60 22 71 49 98 60 71 71 60 98 49 71 22 60 49 49Z'/%3E%3Ccircle cx='60' cy='60' r='9'/%3E%3Cpath d='M0 0h120v120H0z' stroke-opacity='.35'/%3E%3C/g%3E%3C/svg%3E");
+  background-size:120px 120px}
+
+/* ---------- glass primitive ---------- */
+.glass{
+  position:relative;background:var(--glass);
+  -webkit-backdrop-filter:blur(26px) saturate(170%);backdrop-filter:blur(26px) saturate(170%);
+  border:1px solid var(--line);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.95),inset 0 -1px 0 rgba(11,15,26,.04),var(--shadow);
+}
+.glass::before{ /* specular that follows the pointer */
+  content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+  background:radial-gradient(240px circle at var(--mx,50%) var(--my,0%),rgba(255,255,255,.55),transparent 60%);
+  opacity:0;transition:opacity .35s;
+}
+.glass:hover::before{opacity:1}
+
+/* ---------- header ---------- */
+header{position:sticky;top:14px;z-index:40;padding:0 16px}
+.nav{max-width:1120px;margin:0 auto;border-radius:var(--r-pill);padding:8px 10px 8px 18px;
+  display:flex;align-items:center;gap:14px}
+.brand{font-family:var(--display);font-weight:700;font-size:22px;letter-spacing:-.02em;display:flex;align-items:baseline;gap:6px;direction:ltr}
+.brand small{font-weight:400;font-size:13px;color:var(--ink-2);letter-spacing:.08em;text-transform:uppercase}
+.brand .dot{width:8px;height:8px;border-radius:50%;background:linear-gradient(135deg,var(--marine),var(--lilac));align-self:center}
+.search{flex:1;display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.5);border:1px solid var(--line-dark);
+  border-radius:var(--r-pill);padding:8px 14px;color:var(--ink-3);max-width:420px;margin-inline:auto}
+.search input{flex:1;border:0;background:none;outline:none;color:var(--ink);min-width:0}
+.search input::placeholder{color:var(--ink-3)}
+.nav-actions{display:flex;gap:6px;margin-inline-start:auto}
+.icon-btn{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;position:relative;
+  background:rgba(255,255,255,.55);border:1px solid var(--line-dark);transition:transform .2s,background .2s}
+.icon-btn:hover{background:#fff;transform:translateY(-1px)}
+.icon-btn .badge{position:absolute;top:-4px;inset-inline-start:-4px;min-width:20px;height:20px;padding:0 6px;border-radius:10px;
+  background:var(--ink);color:#fff;font-size:11px;font-weight:600;display:grid;place-items:center;font-family:var(--display)}
+.icon-btn .badge:empty{display:none}
+
+/* ---------- layout ---------- */
+.wrap{max-width:1120px;margin:0 auto;padding:0 16px}
+section{padding-block:56px}
+
+/* ---------- hero ---------- */
+.hero{display:grid;grid-template-columns:1.05fr .95fr;gap:32px;align-items:center;padding-top:72px;min-height:78vh}
+.eyebrow{font-size:13px;color:var(--ink-2);letter-spacing:.02em;display:inline-flex;gap:8px;align-items:center;
+  padding:6px 12px 6px 8px;border-radius:var(--r-pill);background:rgba(255,255,255,.5);border:1px solid var(--line-dark);margin-bottom:22px}
+.eyebrow i{width:8px;height:8px;border-radius:50%;background:var(--mint);box-shadow:0 0 0 4px rgba(86,214,194,.25)}
+h1{font-family:var(--display);font-weight:600;font-size:clamp(38px,6vw,72px);line-height:1.12;letter-spacing:-.02em;margin-bottom:20px}
+h1 .soft{color:var(--ink-3);font-weight:300}
+.lead{font-size:18px;color:var(--ink-2);max-width:46ch;margin-bottom:30px;font-weight:300}
+.cta-row{display:flex;gap:10px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:13px 22px;border-radius:var(--r-pill);font-weight:500;font-size:15px;
+  transition:transform .2s,box-shadow .2s,background .2s}
+.btn:active{transform:scale(.97)}
+.btn-ink{background:var(--ink);color:#fff;box-shadow:0 12px 24px -10px rgba(11,15,26,.5)}
+.btn-ink:hover{transform:translateY(-1px);box-shadow:0 16px 30px -10px rgba(11,15,26,.55)}
+.btn-glass{background:rgba(255,255,255,.55);border:1px solid var(--line-dark)}
+.btn-glass:hover{background:#fff}
+
+.stage{position:relative;height:520px}
+.tile{position:absolute;border-radius:var(--r-xl);padding:20px;display:flex;flex-direction:column;justify-content:space-between;
+  animation:float 7s ease-in-out infinite}
+.tile .art{width:100%;flex:1;display:grid;place-items:center}
+.tile .art svg{width:60%;height:auto}
+.tile .name{font-family:var(--display);font-weight:500;font-size:14px}
+.tile .price{font-size:12px;color:var(--ink-2);direction:ltr;text-align:right}
+.t1{width:250px;height:290px;top:20px;right:40px;animation-delay:0s}
+.t2{width:200px;height:220px;top:230px;left:30px;animation-delay:-2.5s}
+.t3{width:180px;height:180px;bottom:10px;right:120px;animation-delay:-4.5s}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+
+/* ---------- categories ---------- */
+.seg{display:inline-flex;gap:4px;padding:5px;border-radius:var(--r-pill);flex-wrap:wrap}
+.seg button{padding:9px 18px;border-radius:var(--r-pill);font-size:14px;font-weight:500;color:var(--ink-2);transition:background .25s,color .25s,box-shadow .25s}
+.seg button:hover{color:var(--ink)}
+.seg button[aria-pressed="true"]{background:#fff;color:var(--ink);box-shadow:0 4px 14px -4px rgba(20,30,70,.25)}
+.section-head{display:flex;align-items:end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:22px}
+h2{font-family:var(--display);font-weight:600;font-size:30px;letter-spacing:-.02em}
+.muted{color:var(--ink-3);font-size:14px}
+
+/* ---------- products ---------- */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:18px}
+.card{border-radius:var(--r-lg);padding:14px;display:flex;flex-direction:column;gap:12px;
+  transition:transform .3s cubic-bezier(.2,.8,.2,1),box-shadow .3s}
+.card:hover{transform:translateY(-4px)}
+.card .art{aspect-ratio:1;border-radius:var(--r-md);display:grid;place-items:center;position:relative;overflow:hidden;
+  background:linear-gradient(160deg,rgba(255,255,255,.9),rgba(255,255,255,.35))}
+.card .art svg{width:48%;height:auto;filter:drop-shadow(0 12px 18px rgba(20,30,70,.18))}
+.card .art .cat{position:absolute;top:10px;inset-inline-start:10px;font-size:11px;padding:4px 9px;border-radius:var(--r-pill);
+  background:rgba(255,255,255,.7);border:1px solid var(--line-dark);color:var(--ink-2)}
+.card .art .stock{position:absolute;bottom:10px;inset-inline-end:10px;font-size:11px;padding:4px 9px;border-radius:var(--r-pill);background:var(--ink);color:#fff}
+.card .info{display:flex;flex-direction:column;gap:2px;padding:0 4px}
+.card .name{font-family:var(--display);font-weight:500;font-size:15px;line-height:1.35}
+.card .desc{font-size:12.5px;color:var(--ink-3);font-weight:300}
+.card .foot{display:flex;align-items:center;justify-content:space-between;padding:0 4px 2px}
+.price{font-family:var(--display);font-weight:600;font-size:17px;direction:ltr;display:inline-flex;gap:4px;align-items:baseline}
+.price .cur{font-size:11px;font-weight:400;color:var(--ink-2)}
+.add{width:38px;height:38px;border-radius:50%;background:var(--ink);color:#fff;display:grid;place-items:center;transition:transform .2s,background .2s}
+.add:hover{transform:scale(1.08)}
+.add.done{background:var(--mint);color:var(--ink)}
+.empty{grid-column:1/-1;padding:48px;text-align:center;border-radius:var(--r-lg);color:var(--ink-2)}
+
+/* ---------- promise strip ---------- */
+.strip{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.strip .glass{border-radius:var(--r-lg);padding:22px;display:flex;gap:14px;align-items:flex-start}
+.strip .ic{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;background:rgba(255,255,255,.7);border:1px solid var(--line-dark);flex:none}
+.strip h3{font-family:var(--display);font-weight:500;font-size:16px;margin-bottom:4px}
+.strip p{font-size:13px;color:var(--ink-2);font-weight:300}
+
+/* ---------- footer ---------- */
+footer{padding:40px 16px 30px;text-align:center;color:var(--ink-3);font-size:13px}
+footer .foot-card{max-width:1120px;margin:0 auto 18px;border-radius:var(--r-xl);padding:28px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;color:var(--ink)}
+footer .links{display:flex;gap:18px;font-size:14px;color:var(--ink-2)}
+footer .links a{color:inherit;text-decoration:none}
+footer .links a:hover{color:var(--ink)}
+
+/* ---------- drawer & modal ---------- */
+.scrim{position:fixed;inset:0;background:rgba(11,15,26,.28);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);
+  opacity:0;pointer-events:none;transition:opacity .3s;z-index:50}
+.scrim.on{opacity:1;pointer-events:auto}
+.drawer{position:fixed;top:12px;bottom:12px;inset-inline-start:12px;width:min(420px,calc(100% - 24px));z-index:60;
+  border-radius:var(--r-xl);display:flex;flex-direction:column;
+  transform:translateX(calc(-110% * var(--dir,1)));transition:transform .45s cubic-bezier(.2,.8,.2,1)}
+[dir="rtl"] .drawer{--dir:1}
+.drawer.on{transform:none}
+.drawer header{position:static;padding:22px 22px 12px;display:flex;align-items:center;justify-content:space-between}
+.drawer header h2{font-size:22px}
+.close{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.6);border:1px solid var(--line-dark);display:grid;place-items:center}
+.lines{flex:1;overflow:auto;padding:6px 16px;display:flex;flex-direction:column;gap:8px}
+.line{display:grid;grid-template-columns:60px 1fr auto;gap:12px;align-items:center;padding:10px;border-radius:var(--r-md);background:rgba(255,255,255,.5);border:1px solid var(--line-dark)}
+.line .thumb{width:60px;height:60px;border-radius:12px;display:grid;place-items:center;background:rgba(255,255,255,.8)}
+.line .thumb svg{width:60%}
+.line .n{font-size:14px;font-weight:500;font-family:var(--display)}
+.line .p{font-size:12px;color:var(--ink-2)}
+.qty{display:inline-flex;align-items:center;gap:2px;background:rgba(255,255,255,.7);border:1px solid var(--line-dark);border-radius:var(--r-pill);padding:2px}
+.qty button{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font-size:16px}
+.qty button:hover{background:#fff}
+.qty span{min-width:22px;text-align:center;font-family:var(--display);font-size:14px}
+.summary{padding:14px 22px 22px;border-top:1px solid var(--line-dark);display:flex;flex-direction:column;gap:8px}
+.row{display:flex;justify-content:space-between;font-size:14px;color:var(--ink-2)}
+.row.total{font-size:18px;color:var(--ink);font-family:var(--display);font-weight:600;margin-top:4px}
+.summary .btn{justify-content:center;width:100%}
+.hint{font-size:12px;color:var(--ink-3);text-align:center;font-weight:300}
+.cart-empty{margin:auto;text-align:center;color:var(--ink-2);padding:30px}
+.cart-empty p{font-size:14px;margin-top:6px;color:var(--ink-3)}
+
+.modal{position:fixed;inset:0;z-index:70;display:grid;place-items:center;padding:16px;pointer-events:none}
+.modal .panel{width:min(760px,100%);border-radius:var(--r-xl);padding:22px;display:grid;grid-template-columns:1fr 1fr;gap:22px;
+  opacity:0;transform:translateY(16px) scale(.98);transition:opacity .3s,transform .35s cubic-bezier(.2,.8,.2,1)}
+.modal.on{pointer-events:auto}
+.modal.on .panel{opacity:1;transform:none}
+.modal .art{aspect-ratio:1;border-radius:var(--r-lg);display:grid;place-items:center;background:linear-gradient(160deg,rgba(255,255,255,.95),rgba(255,255,255,.4))}
+.modal .art svg{width:52%;filter:drop-shadow(0 18px 26px rgba(20,30,70,.2))}
+.modal .body{display:flex;flex-direction:column;gap:12px}
+.modal h2{font-size:24px}
+.modal .desc{color:var(--ink-2);font-weight:300;font-size:14px}
+.specs{display:flex;flex-direction:column;gap:6px;font-size:13px}
+.specs div{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--line-dark)}
+.specs span:last-child{color:var(--ink-2);direction:ltr}
+.swatches{display:flex;gap:8px}
+.sw{width:28px;height:28px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 1px var(--line-dark);cursor:pointer;transition:transform .2s}
+.sw[aria-pressed="true"]{transform:scale(1.15);box-shadow:0 0 0 2px var(--ink)}
+.modal .actions{margin-top:auto;display:flex;gap:10px;align-items:center;justify-content:space-between}
+.modal .close{position:absolute;top:14px;inset-inline-start:14px}
+
+/* payment method */
+.pay-seg{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;border-radius:16px;background:rgba(255,255,255,.45);border:1px solid var(--line-dark);margin-top:6px}
+.pay-seg button{display:flex;align-items:center;justify-content:center;gap:6px;padding:9px 6px;border-radius:12px;font-size:12.5px;font-weight:500;color:var(--ink-2);transition:background .25s,color .25s,box-shadow .25s}
+.pay-seg button[aria-pressed="true"]{background:#fff;color:var(--ink);box-shadow:0 4px 12px -4px rgba(20,30,70,.25)}
+.transfer{text-align:start;max-width:560px}
+.transfer .kv{display:flex;flex-direction:column;gap:6px;margin:16px 0}
+.transfer .kv div{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 14px;border-radius:14px;background:rgba(255,255,255,.6);border:1px solid var(--line-dark);font-size:14px}
+.transfer .kv b{font-family:var(--display);font-weight:500;direction:ltr;unicode-bidi:isolate}
+.transfer .kv small{color:var(--ink-3);font-size:12px;flex:none}
+.transfer .copy{font-size:12px;padding:5px 10px;border-radius:var(--r-pill);background:var(--ink);color:#fff;flex:none}
+.transfer .cta-row{margin-top:16px}
+.transfer .cta-row .btn{flex:1;justify-content:center}
+
+/* checkout form */
+.form{display:flex;flex-direction:column;gap:8px;margin:6px 0 4px}
+.form input{width:100%;padding:11px 14px;border-radius:14px;border:1px solid var(--line-dark);background:rgba(255,255,255,.65);outline:none;font-size:14px}
+.form input:focus{border-color:var(--marine);box-shadow:0 0 0 3px rgba(47,107,255,.15)}
+.form input.err{border-color:#E5484D;box-shadow:0 0 0 3px rgba(229,72,77,.15)}
+.form .two{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.status{border-radius:var(--r-xl);padding:36px;text-align:center;max-width:520px;margin:0 auto 40px}
+.status .ic{width:64px;height:64px;border-radius:50%;display:grid;place-items:center;margin:0 auto 14px;background:var(--mint);color:var(--ink)}
+.status.fail .ic{background:#FFD5D6;color:#B3261E}
+.status h2{font-size:24px;margin-bottom:6px}
+.status p{color:var(--ink-2);font-weight:300;font-size:14px}
+.status .ref{font-family:var(--display);font-size:12px;color:var(--ink-3);direction:ltr;margin-top:12px}
+
+/* toast */
+.toast{position:fixed;bottom:22px;left:50%;transform:translate(-50%,20px);z-index:80;padding:12px 20px;border-radius:var(--r-pill);
+  font-size:14px;opacity:0;transition:opacity .3s,transform .3s;pointer-events:none;color:var(--ink)}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+
+/* reveal on scroll */
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .6s,transform .6s cubic-bezier(.2,.8,.2,1)}
+.reveal.in{opacity:1;transform:none}
+
+@media (max-width:900px){
+  .hero{grid-template-columns:1fr;min-height:auto;padding-top:48px}
+  .stage{height:380px;margin-top:10px}
+  .t1{width:200px;height:230px;right:10px;top:0}.t2{width:160px;height:180px;left:10px;top:160px}.t3{width:140px;height:140px;bottom:0;right:110px}
+  .strip{grid-template-columns:1fr}
+  .search{display:none}
+  .modal .panel{grid-template-columns:1fr;max-height:92vh;overflow:auto}
+  .modal .art{max-height:260px}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  .reveal{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+
+<div class="sky" aria-hidden="true">
+  <div class="orb a"></div><div class="orb b"></div><div class="orb c"></div><div class="orb d"></div>
+  <div class="pattern"></div>
+</div>
+
+<!-- shared SVG symbols -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="gMetal" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#C9CFDA"/></linearGradient>
+    <linearGradient id="gInk" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3A4256"/><stop offset="1" stop-color="#0B0F1A"/></linearGradient>
+    <linearGradient id="gMarine" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7FA3FF"/><stop offset="1" stop-color="#2F6BFF"/></linearGradient>
+    <linearGradient id="gLilac" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#E2CFFF"/><stop offset="1" stop-color="#B98CFF"/></linearGradient>
+    <linearGradient id="gMint" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#B3F2E8"/><stop offset="1" stop-color="#56D6C2"/></linearGradient>
+  </defs>
+  <symbol id="i-charger" viewBox="0 0 120 120"><circle cx="60" cy="60" r="44" fill="url(#gMetal)"/><circle cx="60" cy="60" r="30" fill="none" stroke="#fff" stroke-width="6"/><circle cx="60" cy="60" r="18" fill="url(#gMarine)"/><path d="M60 110v8" stroke="#C9CFDA" stroke-width="8" stroke-linecap="round"/></symbol>
+  <symbol id="i-cable" viewBox="0 0 120 120"><path d="M20 30c0 40 80 20 80 60" fill="none" stroke="url(#gInk)" stroke-width="10" stroke-linecap="round"/><rect x="8" y="14" width="26" height="22" rx="7" fill="url(#gMetal)"/><rect x="86" y="84" width="26" height="22" rx="7" fill="url(#gMetal)"/></symbol>
+  <symbol id="i-case" viewBox="0 0 120 120"><rect x="30" y="10" width="60" height="100" rx="14" fill="url(#gLilac)" opacity=".9"/><rect x="36" y="18" width="22" height="26" rx="7" fill="#fff" opacity=".8"/><circle cx="44" cy="27" r="4" fill="url(#gInk)"/><circle cx="52" cy="35" r="4" fill="url(#gInk)"/></symbol>
+  <symbol id="i-buds" viewBox="0 0 120 120"><rect x="18" y="40" width="84" height="60" rx="22" fill="url(#gMetal)"/><ellipse cx="44" cy="50" rx="11" ry="14" fill="#fff"/><ellipse cx="76" cy="50" rx="11" ry="14" fill="#fff"/><rect x="40" y="58" width="8" height="24" rx="4" fill="#fff"/><rect x="72" y="58" width="8" height="24" rx="4" fill="#fff"/></symbol>
+  <symbol id="i-power" viewBox="0 0 120 120"><rect x="24" y="16" width="72" height="88" rx="16" fill="url(#gInk)"/><path d="M64 34 48 62h14l-6 24 18-32H60Z" fill="url(#gMint)"/></symbol>
+  <symbol id="i-keyboard" viewBox="0 0 120 120"><rect x="10" y="38" width="100" height="48" rx="10" fill="url(#gMetal)"/><g fill="#fff"><rect x="18" y="46" width="10" height="10" rx="3"/><rect x="32" y="46" width="10" height="10" rx="3"/><rect x="46" y="46" width="10" height="10" rx="3"/><rect x="60" y="46" width="10" height="10" rx="3"/><rect x="74" y="46" width="10" height="10" rx="3"/><rect x="88" y="46" width="14" height="10" rx="3"/><rect x="18" y="60" width="14" height="10" rx="3"/><rect x="36" y="60" width="10" height="10" rx="3"/><rect x="50" y="60" width="10" height="10" rx="3"/><rect x="64" y="60" width="10" height="10" rx="3"/><rect x="78" y="60" width="24" height="10" rx="3"/><rect x="34" y="74" width="52" height="6" rx="3"/></g><rect x="88" y="46" width="14" height="10" rx="3" fill="url(#gMarine)"/></symbol>
+  <symbol id="i-mouse" viewBox="0 0 120 120"><path d="M38 20h44a0 0 0 0 1 0 0v50a22 22 0 0 1-22 22h0a22 22 0 0 1-22-22V20Z" fill="url(#gMetal)"/><path d="M60 20v32" stroke="#fff" stroke-width="3"/><rect x="56" y="30" width="8" height="14" rx="4" fill="url(#gInk)"/></symbol>
+  <symbol id="i-stand" viewBox="0 0 120 120"><path d="M22 28h76l-8 44H30Z" fill="url(#gMetal)"/><path d="M34 72h52l-4 24H38Z" fill="url(#gInk)" opacity=".75"/><rect x="26" y="96" width="68" height="8" rx="4" fill="url(#gMetal)"/></symbol>
+  <symbol id="i-hub" viewBox="0 0 120 120"><rect x="14" y="44" width="92" height="32" rx="10" fill="url(#gMetal)"/><g fill="url(#gInk)"><rect x="22" y="54" width="14" height="12" rx="2"/><rect x="42" y="54" width="14" height="12" rx="2"/><rect x="62" y="54" width="14" height="12" rx="2"/><rect x="82" y="54" width="14" height="12" rx="3"/></g><path d="M60 44V24" stroke="url(#gInk)" stroke-width="6" stroke-linecap="round"/></symbol>
+  <symbol id="i-strap" viewBox="0 0 120 120"><rect x="46" y="8" width="28" height="104" rx="12" fill="url(#gMint)"/><rect x="40" y="40" width="40" height="40" rx="10" fill="url(#gInk)"/><rect x="46" y="46" width="28" height="28" rx="7" fill="url(#gMarine)"/></symbol>
+  <symbol id="i-gan" viewBox="0 0 120 120"><rect x="26" y="28" width="68" height="64" rx="14" fill="#fff" stroke="#C9CFDA" stroke-width="3"/><rect x="34" y="40" width="20" height="10" rx="3" fill="url(#gInk)"/><rect x="34" y="56" width="20" height="10" rx="3" fill="url(#gInk)"/><rect x="66" y="40" width="20" height="26" rx="4" fill="url(#gMarine)"/><path d="M48 92v14M72 92v14" stroke="#C9CFDA" stroke-width="7" stroke-linecap="round"/></symbol>
+  <symbol id="i-glass" viewBox="0 0 120 120"><rect x="32" y="8" width="56" height="104" rx="8" fill="url(#gMarine)" opacity=".18"/><rect x="32" y="8" width="56" height="104" rx="8" fill="none" stroke="url(#gMarine)" stroke-width="3"/><path d="M44 96 78 22" stroke="#fff" stroke-width="5" stroke-linecap="round" opacity=".9"/></symbol>
+  <symbol id="i-cart" viewBox="0 0 24 24"><path d="M3 4h2l2.4 11.2a2 2 0 0 0 2 1.6h7.8a2 2 0 0 0 2-1.5L21 8H7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="10" cy="20" r="1.4" fill="currentColor"/><circle cx="17" cy="20" r="1.4" fill="currentColor"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4.5 4.5L19 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m20 20-3.5-3.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+  <symbol id="i-truck" viewBox="0 0 24 24"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="7" cy="18" r="1.8" fill="currentColor"/><circle cx="17" cy="18" r="1.8" fill="currentColor"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3 4 6v6c0 4.5 3.4 7.8 8 9 4.6-1.2 8-4.5 8-9V6z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="m9 12 2 2 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="10" rx="3" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M8 10V7a4 4 0 0 1 8 0v3" fill="none" stroke="currentColor" stroke-width="1.8"/></symbol>
+  <symbol id="i-bank" viewBox="0 0 24 24"><path d="M3 9 12 4l9 5H3zM5 9v8M9.5 9v8M14.5 9v8M19 9v8M3 19h18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-chat" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></symbol>
+</svg>
+
+<header>
+  <nav class="nav glass" aria-label="التنقل الرئيسي">
+    <a class="brand" href="#" aria-label="RaM store"><span>RaM</span><span class="dot"></span><small>store</small></a>
+    <label class="search"><svg width="18" height="18"><use href="#i-search"/></svg><input id="q" type="search" placeholder="ابحث عن شاحن، كيبل، جراب…" autocomplete="off"></label>
+    <div class="nav-actions">
+      <button class="icon-btn" id="cartBtn" aria-label="فتح السلة"><svg width="20" height="20"><use href="#i-cart"/></svg><span class="badge" id="badge"></span></button>
+    </div>
+  </nav>
+</header>
+
+<main class="wrap">
+  <div id="payStatus"></div>
+
+  <section class="hero">
+    <div>
+      <span class="eyebrow"><i></i> التوصيل داخل المملكة خلال ٢–٤ أيام</span>
+      <h1>كل ما يشحن، يوصّل،<br><span class="soft">ويحمي أجهزتك.</span></h1>
+      <p class="lead">إكسسوارات مختارة لأجهزة الآيفون والأندرويد والكمبيوتر. لا تشكيلة ضخمة، بل ما جرّبناه بأنفسنا واعتمدناه.</p>
+      <div class="cta-row">
+        <a class="btn btn-ink" href="#shop">تصفّح المنتجات</a>
+        <a class="btn btn-glass" href="#promise">كيف يعمل الطلب؟</a>
+      </div>
+    </div>
+    <div class="stage" aria-hidden="true">
+      <div class="tile glass t1"><div class="art"><svg><use href="#i-charger"/></svg></div><div><div class="name">شاحن مغناطيسي 15W</div><div class="price">89 ر.س</div></div></div>
+      <div class="tile glass t2"><div class="art"><svg><use href="#i-buds"/></svg></div><div><div class="name">سماعات لاسلكية</div><div class="price">199 ر.س</div></div></div>
+      <div class="tile glass t3"><div class="art"><svg><use href="#i-cable"/></svg></div><div><div class="name">كيبل USB-C مجدول</div><div class="price">39 ر.س</div></div></div>
+    </div>
+  </section>
+
+  <section id="shop">
+    <div class="section-head reveal">
+      <div><h2>المنتجات</h2><p class="muted" id="count"></p></div>
+      <div class="seg glass" role="group" aria-label="التصفية حسب الجهاز">
+        <button data-cat="all" aria-pressed="true">الكل</button>
+        <button data-cat="iphone" aria-pressed="false">آيفون</button>
+        <button data-cat="android" aria-pressed="false">أندرويد</button>
+        <button data-cat="pc" aria-pressed="false">كمبيوتر</button>
+        <button data-cat="audio" aria-pressed="false">صوت</button>
+      </div>
+    </div>
+    <div class="grid" id="grid"></div>
+  </section>
+
+  <section id="promise">
+    <div class="strip">
+      <div class="glass reveal"><div class="ic"><svg width="22" height="22"><use href="#i-chat"/></svg></div><div><h3>اطلب عبر واتساب</h3><p>تُجمع سلتك في رسالة جاهزة، نؤكد التوفر ونرسل لك بيانات التحويل.</p></div></div>
+      <div class="glass reveal"><div class="ic"><svg width="22" height="22"><use href="#i-truck"/></svg></div><div><h3>رسوم توصيل ثابتة</h3><p>15 ر.س لأي طلب داخل المملكة، ومجاني إذا تجاوز طلبك 250 ر.س.</p></div></div>
+      <div class="glass reveal"><div class="ic"><svg width="22" height="22"><use href="#i-shield"/></svg></div><div><h3>ضمان استبدال 7 أيام</h3><p>إن وصلك المنتج معيبًا أو لا يناسب جهازك، نستبدله خلال أسبوع.</p></div></div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="foot-card glass">
+    <a class="brand" href="#"><span>RaM</span><span class="dot"></span><small>store</small></a>
+    <div class="links"><a href="#shop">المنتجات</a><a href="#promise">الطلب والتوصيل</a><a href="#" id="waLink">واتساب</a></div>
+  </div>
+  <p>© 2026 RaM store · الأسعار شاملة الضريبة</p>
+</footer>
+
+<!-- cart drawer -->
+<div class="scrim" id="scrim"></div>
+<aside class="drawer glass" id="drawer" aria-label="سلة المشتريات" aria-hidden="true">
+  <header><h2>السلة</h2><button class="close" id="closeCart" aria-label="إغلاق السلة"><svg width="18" height="18"><use href="#i-x"/></svg></button></header>
+  <div class="lines" id="lines"></div>
+  <div class="summary" id="summary">
+    <div class="row"><span>المجموع</span><span id="sub">0 ر.س</span></div>
+    <div class="row"><span>التوصيل</span><span id="ship">15 ر.س</span></div>
+    <div class="row total"><span>الإجمالي</span><span id="total">0 ر.س</span></div>
+    <div class="pay-seg" role="group" aria-label="طريقة الدفع">
+      <button data-pay="tap" aria-pressed="true"><svg width="16" height="16"><use href="#i-lock"/></svg> بطاقة / مدى / Apple Pay</button>
+      <button data-pay="transfer" aria-pressed="false"><svg width="16" height="16"><use href="#i-bank"/></svg> تحويل بنكي</button>
+    </div>
+    <div class="form" id="form">
+      <input id="fName" placeholder="الاسم الكامل" autocomplete="name">
+      <div class="two"><input id="fPhone" placeholder="05xxxxxxxx" inputmode="tel" autocomplete="tel"><input id="fEmail" placeholder="البريد الإلكتروني" inputmode="email" autocomplete="email"></div>
+      <input id="fAddr" placeholder="المدينة والحي والشارع" autocomplete="street-address">
+    </div>
+    <button class="btn btn-ink" id="checkout"><svg width="18" height="18"><use href="#i-lock"/></svg> <span>ادفع الآن</span></button>
+    <p class="hint" id="payHint">مدى · فيزا · ماستركارد · Apple Pay — عبر بوابة Tap الآمنة</p>
+    <button class="btn btn-glass" id="waOrder" style="justify-content:center;font-size:13px;padding:9px"><svg width="16" height="16"><use href="#i-chat"/></svg> أو أرسل الطلب عبر واتساب</button>
+  </div>
+</aside>
+
+<!-- product modal -->
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-hidden="true">
+  <div class="panel glass" id="panel"></div>
+</div>
+
+<div class="toast glass" id="toast" role="status"></div>
+
+<script>
+/* ====== إعدادات المتجر ====== */
+const STORE = {
+  whatsapp: '9665XXXXXXXX',   // رقم واتساب المتجر بصيغة دولية بدون +
+  api: 'https://ram-store-api.YOUR-SUBDOMAIN.workers.dev', // رابط الـ Worker
+  shipping: 15,
+  freeShippingFrom: 250,
+  bank: { name:'البنك الأهلي السعودي', holder:'اسم صاحب الحساب', iban:'SA00 0000 0000 0000 0000 0000' }  // بيانات التحويل
+};
+
+/* ====== المنتجات ====== */
+const CAT = {iphone:'آيفون', android:'أندرويد', pc:'كمبيوتر', audio:'صوت'};
+const PRODUCTS = [
+  {id:'mag15', cat:'iphone', icon:'i-charger', name:'شاحن مغناطيسي لاسلكي 15W', desc:'يثبت على ظهر الجهاز ويشحن بأقصى سرعة لاسلكية.', price:89, stock:12,
+   specs:{'القدرة':'15W','الطول':'1.5 م','المنفذ':'USB-C'}, colors:['#E9EDF3','#0B0F1A']},
+  {id:'cable-c', cat:'android', icon:'i-cable', name:'كيبل USB-C إلى USB-C مجدول', desc:'شحن حتى 100W ونقل بيانات، بغلاف نايلون يتحمل الثني.', price:39, stock:40,
+   specs:{'القدرة':'100W','الطول':'2 م','الطرفان':'USB-C / USB-C'}, colors:['#0B0F1A','#2F6BFF','#B98CFF']},
+  {id:'case-clear', cat:'iphone', icon:'i-case', name:'جراب شفاف مقاوم للاصفرار', desc:'حواف مرتفعة تحمي الكاميرا والشاشة، ولا يصفرّ مع الوقت.', price:59, stock:8,
+   specs:{'الخامة':'TPU + بولي كربونات','الحماية':'سقوط 2 م','المغناطيس':'مدعوم'}, colors:['#E9EDF3','#B98CFF','#56D6C2']},
+  {id:'buds', cat:'audio', icon:'i-buds', name:'سماعات لاسلكية بعزل الضجيج', desc:'عزل ضجيج نشط، 30 ساعة مع العلبة، توصيل بجهازين معًا.', price:199, stock:15,
+   specs:{'البطارية':'30 ساعة','العزل':'ANC','الشحن':'USB-C'}, colors:['#E9EDF3','#0B0F1A']},
+  {id:'power20', cat:'android', icon:'i-power', name:'بطارية متنقلة 20000mAh', desc:'تشحن جهازين في آنٍ واحد، مع شاشة تعرض النسبة المتبقية.', price:129, stock:20,
+   specs:{'السعة':'20000mAh','الإخراج':'22.5W','المنافذ':'USB-C ×1، USB-A ×2'}, colors:['#0B0F1A','#E9EDF3']},
+  {id:'kb', cat:'pc', icon:'i-keyboard', name:'لوحة مفاتيح ميكانيكية 75%', desc:'مفاتيح هادئة، إضاءة بيضاء، تعمل بالبلوتوث أو الكيبل.', price:349, stock:6,
+   specs:{'التخطيط':'75% عربي/إنجليزي','الاتصال':'Bluetooth 5 / USB-C','المفاتيح':'Brown'}, colors:['#E9EDF3','#0B0F1A']},
+  {id:'mouse', cat:'pc', icon:'i-mouse', name:'فأرة لاسلكية صامتة', desc:'ثلاثة أجهزة بضغطة زر، وبطارية تدوم شهرين.', price:119, stock:18,
+   specs:{'الدقة':'4000 DPI','الاتصال':'Bluetooth / 2.4G','البطارية':'60 يوم'}, colors:['#E9EDF3','#0B0F1A','#56D6C2']},
+  {id:'stand', cat:'pc', icon:'i-stand', name:'حامل لابتوب ألمنيوم', desc:'يرفع الشاشة لمستوى النظر ويُبرّد الجهاز من الأسفل.', price:149, stock:10,
+   specs:{'الخامة':'ألمنيوم','المقاس':'حتى 16 بوصة','الوزن':'1.1 كجم'}, colors:['#C9CFDA','#0B0F1A']},
+  {id:'hub', cat:'pc', icon:'i-hub', name:'موزع USB-C ‏7 في 1', desc:'HDMI 4K، قارئ بطاقات، ثلاثة منافذ USB وشحن عابر 100W.', price:159, stock:14,
+   specs:{'العرض':'HDMI 4K@60','المنافذ':'7','الشحن العابر':'100W'}, colors:['#C9CFDA']},
+  {id:'strap', cat:'iphone', icon:'i-strap', name:'سوار ساعة رياضي سيليكون', desc:'ناعم على الجلد ولا يمتص العرق، بمقاسين في العلبة.', price:45, stock:30,
+   specs:{'المقاس':'42/44/45/49 مم','الخامة':'فلوروإيلاستومر','المشبك':'دبوس'}, colors:['#56D6C2','#2F6BFF','#FFB65C','#0B0F1A']},
+  {id:'gan65', cat:'android', icon:'i-gan', name:'شاحن GaN 65W بثلاثة منافذ', desc:'يشحن اللابتوب والجوال والسماعة معًا من مقبس واحد.', price:139, stock:0,
+   specs:{'القدرة':'65W','المنافذ':'USB-C ×2، USB-A ×1','القابس':'سعودي (G)'}, colors:['#E9EDF3']},
+  {id:'glass', cat:'iphone', icon:'i-glass', name:'حماية شاشة زجاجية بإطار تركيب', desc:'إطار يضمن التركيب بلا فقاعات من أول محاولة.', price:35, stock:50,
+   specs:{'الصلابة':'9H','السماكة':'0.33 مم','العبوة':'قطعتان'}, colors:['#2F6BFF']},
+];
+
+/* ====== أدوات ====== */
+const $ = s => document.querySelector(s);
+const fmt = n => `${n.toLocaleString('en')} ر.س`;
+const svg = id => `<svg><use href="#${id}"/></svg>`;
+let filter = 'all', query = '', payMethod = 'tap';
+let cart = {};   // {key:{id,qty,color}}
+try{ cart = JSON.parse(localStorage.getItem('ram-cart') || '{}'); }catch(e){}
+
+/* ====== الشبكة ====== */
+function renderGrid(){
+  const list = PRODUCTS.filter(p => (filter==='all' || p.cat===filter) && (p.name+p.desc).includes(query));
+  $('#count').textContent = `${list.length} منتج`;
+  $('#grid').innerHTML = list.length ? list.map(p => `
+    <article class="card glass reveal" data-id="${p.id}">
+      <button class="art" data-open="${p.id}" aria-label="تفاصيل ${p.name}">
+        <span class="cat">${CAT[p.cat]}</span>
+        ${svg(p.icon)}
+        ${p.stock===0 ? '<span class="stock">نفد</span>' : p.stock<=8 ? `<span class="stock">بقي ${p.stock}</span>` : ''}
+      </button>
+      <div class="info"><div class="name">${p.name}</div><div class="desc">${p.desc}</div></div>
+      <div class="foot">
+        <span class="price">${p.price}<span class="cur">ر.س</span></span>
+        <button class="add" data-add="${p.id}" aria-label="أضف ${p.name} إلى السلة" ${p.stock===0?'disabled':''}>${svg('i-plus')}</button>
+      </div>
+    </article>`).join('') :
+    `<div class="empty glass">لا نتائج تطابق "${query}". جرّب كلمة أقصر أو غيّر الفئة.</div>`;
+  observeReveal(); bindSpecular();
+}
+
+/* ====== السلة ====== */
+function save(){ try{ localStorage.setItem('ram-cart', JSON.stringify(cart)); }catch(e){} }
+function add(id, color){
+  const p = PRODUCTS.find(x=>x.id===id); if(!p || p.stock===0) return;
+  const key = color ? `${id}|${color}` : id;
+  cart[key] = cart[key] || {id, color: color||p.colors[0], qty:0};
+  if(cart[key].qty >= p.stock){ toast(`المتوفر من ${p.name} هو ${p.stock} فقط`); return; }
+  cart[key].qty++; save(); renderCart();
+  toast(`أُضيف ${p.name} إلى السلة`);
+  const btn = document.querySelector(`[data-add="${id}"]`);
+  if(btn){ btn.classList.add('done'); btn.innerHTML = svg('i-check'); setTimeout(()=>{btn.classList.remove('done'); btn.innerHTML = svg('i-plus');}, 1100); }
+}
+function setQty(key, d){
+  const line = cart[key]; if(!line) return;
+  const p = PRODUCTS.find(x=>x.id===line.id);
+  line.qty = Math.min(p.stock, line.qty + d);
+  if(line.qty<=0) delete cart[key];
+  save(); renderCart();
+}
+function totals(){
+  const sub = Object.values(cart).reduce((s,l)=> s + l.qty * PRODUCTS.find(p=>p.id===l.id).price, 0);
+  const ship = sub===0 ? 0 : sub>=STORE.freeShippingFrom ? 0 : STORE.shipping;
+  return {sub, ship, total: sub+ship, count: Object.values(cart).reduce((s,l)=>s+l.qty,0)};
+}
+function renderCart(){
+  const t = totals();
+  $('#badge').textContent = t.count || '';
+  const keys = Object.keys(cart);
+  $('#lines').innerHTML = keys.length ? keys.map(k => { const l=cart[k], p=PRODUCTS.find(x=>x.id===l.id); return `
+    <div class="line">
+      <div class="thumb">${svg(p.icon)}</div>
+      <div><div class="n">${p.name}</div><div class="p"><span class="sw" style="width:10px;height:10px;display:inline-block;vertical-align:middle;background:${l.color};border-width:1px"></span> ${fmt(p.price)} × ${l.qty}</div></div>
+      <div class="qty"><button data-q="${k}" data-d="-1" aria-label="أنقص">−</button><span>${l.qty}</span><button data-q="${k}" data-d="1" aria-label="زد">+</button></div>
+    </div>`}).join('') :
+    `<div class="cart-empty"><div style="font-family:var(--display);font-weight:500">سلتك فارغة</div><p>أضف منتجًا من القائمة وسيظهر هنا.</p></div>`;
+  $('#sub').textContent = fmt(t.sub);
+  $('#ship').textContent = t.sub===0 ? '—' : t.ship===0 ? 'مجاني' : fmt(t.ship);
+  $('#total').textContent = fmt(t.total);
+  $('#checkout').disabled = keys.length===0;
+  $('#checkout').style.opacity = keys.length ? 1 : .5;
+}
+function customer(){
+  const c = {name:$('#fName').value.trim(), phone:$('#fPhone').value.trim(), email:$('#fEmail').value.trim(), address:$('#fAddr').value.trim()};
+  let ok = true;
+  [['#fName',c.name.length>=3],['#fPhone',/^05\d{8}$/.test(c.phone)],['#fEmail',/^\S+@\S+\.\S+$/.test(c.email)],['#fAddr',c.address.length>=6]]
+    .forEach(([sel,valid])=>{ $(sel).classList.toggle('err',!valid); if(!valid) ok=false; });
+  return ok ? c : null;
+}
+function orderLines(){ return Object.values(cart).map(l => ({id:l.id, qty:l.qty, color:l.color})); }
+
+function setPay(m){
+  payMethod = m;
+  document.querySelectorAll('[data-pay]').forEach(b=>b.setAttribute('aria-pressed', b.dataset.pay===m));
+  const tap = m==='tap';
+  $('#checkout').innerHTML = `${svg(tap?'i-lock':'i-bank')} <span>${tap?'ادفع الآن':'تأكيد الطلب'}</span>`;
+  $('#payHint').textContent = tap ? 'مدى · فيزا · ماستركارد · Apple Pay — عبر بوابة Tap الآمنة' : 'تظهر لك بيانات الحساب بعد التأكيد، وتُرسل الإيصال عبر واتساب';
+}
+
+async function checkout(){
+  const c = customer(); if(!c){ toast('أكمل بيانات التوصيل أولًا'); return; }
+  if(payMethod==='transfer') return transferOrder(c);
+  const btn = $('#checkout'); btn.disabled = true; btn.querySelector('span').textContent = 'جارٍ التحويل إلى صفحة الدفع…';
+  try{
+    const r = await fetch(`${STORE.api}/checkout`, {method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({items: orderLines(), customer: c, return_url: location.origin + location.pathname})});
+    const d = await r.json();
+    if(!r.ok || !d.url) throw new Error(d.error || 'تعذّر إنشاء عملية الدفع');
+    sessionStorage.setItem('ram-pending', d.order);
+    location.href = d.url;             // صفحة Tap المستضافة (مدى/بطاقات/Apple Pay)
+  }catch(e){
+    toast(e.message); btn.disabled = false; btn.querySelector('span').textContent = 'ادفع الآن';
+  }
+}
+async function transferOrder(c){
+  const btn = $('#checkout'); btn.disabled = true; btn.querySelector('span').textContent = 'جارٍ تسجيل الطلب…';
+  const t = totals(), lines = Object.values(cart).map(l => { const p=PRODUCTS.find(x=>x.id===l.id); return {id:l.id, name:p.name, qty:l.qty, price:p.price}; });
+  let order;
+  try{
+    const r = await fetch(`${STORE.api}/order`, {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({items: orderLines(), customer: c})});
+    const d = await r.json(); if(!r.ok) throw new Error(d.error); order = d.order;
+  }catch(e){ order = 'RS-' + Date.now().toString(36).toUpperCase(); }   // يعمل حتى بدون Worker
+  for(const k in cart) delete cart[k]; save(); renderCart(); closeAll();
+  btn.disabled = false; setPay('transfer');
+
+  const msg = `تحويل بنكي — طلب ${order}\n\n${lines.map(l=>`• ${l.name} (${l.qty}×) — ${fmt(l.price*l.qty)}`).join('\n')}\n\nالإجمالي: ${fmt(t.total)}\nالاسم: ${c.name}\nالجوال: ${c.phone}\nالعنوان: ${c.address}\n\n(أرفق صورة الإيصال هنا)`;
+  const b = STORE.bank;
+  $('#payStatus').innerHTML = `
+    <div class="status glass transfer">
+      <div class="ic">${svg('i-bank')}</div>
+      <h2>طلبك مسجّل: <span style="direction:ltr;unicode-bidi:isolate">${order}</span></h2>
+      <p>حوّل المبلغ ثم أرسل صورة الإيصال. نحجز المنتجات لك 24 ساعة.</p>
+      <div class="kv">
+        <div><small>البنك</small><b style="direction:rtl">${b.name}</b></div>
+        <div><small>باسم</small><b style="direction:rtl">${b.holder}</b></div>
+        <div><small>IBAN</small><b>${b.iban}</b><button class="copy" data-copy="${b.iban.replace(/\s/g,'')}">نسخ</button></div>
+        <div><small>المبلغ</small><b>${fmt(t.total)}</b><button class="copy" data-copy="${t.total}">نسخ</button></div>
+        <div><small>ملاحظة التحويل</small><b>${order}</b><button class="copy" data-copy="${order}">نسخ</button></div>
+      </div>
+      <div class="cta-row">
+        <a class="btn btn-ink" target="_blank" href="https://wa.me/${STORE.whatsapp}?text=${encodeURIComponent(msg)}">${svg('i-chat')} أرسل الإيصال عبر واتساب</a>
+      </div>
+    </div>`;
+  bindSpecular();
+  $('#payStatus').scrollIntoView({behavior:'smooth'});
+}
+function waOrder(){
+  const t = totals();
+  const lines = Object.values(cart).map(l => { const p=PRODUCTS.find(x=>x.id===l.id); return `• ${p.name} (${l.qty}×) — ${fmt(p.price*l.qty)}`; });
+  const msg = `طلب جديد من RaM store\n\n${lines.join('\n')}\n\nالمجموع: ${fmt(t.sub)}\nالتوصيل: ${t.ship? fmt(t.ship):'مجاني'}\nالإجمالي: ${fmt(t.total)}\n\nالاسم:\nالمدينة والحي:`;
+  window.open(`https://wa.me/${STORE.whatsapp}?text=${encodeURIComponent(msg)}`, '_blank');
+}
+
+/* بعد العودة من صفحة Tap: تحقق من حالة الدفع عبر الـ Worker (لا نثق بالرابط وحده) */
+async function verifyReturn(){
+  const tapId = new URLSearchParams(location.search).get('tap_id');
+  if(!tapId) return;
+  history.replaceState({}, '', location.pathname);
+  const box = $('#payStatus');
+  box.innerHTML = `<div class="status glass"><div class="ic">…</div><h2>نتحقق من الدفع</h2><p>لحظات من فضلك.</p></div>`;
+  try{
+    const r = await fetch(`${STORE.api}/verify?tap_id=${encodeURIComponent(tapId)}`);
+    const d = await r.json();
+    if(d.status==='CAPTURED'){
+      for(const k in cart) delete cart[k]; save(); renderCart();
+      box.innerHTML = `<div class="status glass"><div class="ic">${svg('i-check')}</div><h2>تم الدفع بنجاح</h2><p>وصلنا طلبك وسنتواصل معك على ${d.phone||'رقمك'} لتأكيد التوصيل.</p><div class="ref">Order ${d.order} · ${tapId}</div></div>`;
+    }else{
+      box.innerHTML = `<div class="status glass fail"><div class="ic">${svg('i-x')}</div><h2>لم يكتمل الدفع</h2><p>${d.message||'لم يُخصم أي مبلغ.'} سلتك محفوظة، يمكنك المحاولة مجددًا.</p><div class="ref">${tapId}</div></div>`;
+    }
+  }catch(e){
+    box.innerHTML = `<div class="status glass fail"><div class="ic">${svg('i-x')}</div><h2>تعذّر التحقق</h2><p>تواصل معنا على واتساب مع هذا الرقم المرجعي.</p><div class="ref">${tapId}</div></div>`;
+  }
+  box.scrollIntoView({behavior:'smooth'});
+}
+
+/* ====== النافذة ====== */
+let activeColor = null;
+function openModal(id){
+  const p = PRODUCTS.find(x=>x.id===id); activeColor = p.colors[0];
+  $('#panel').innerHTML = `
+    <button class="close" id="closeModal" aria-label="إغلاق">${svg('i-x')}</button>
+    <div class="art">${svg(p.icon)}</div>
+    <div class="body">
+      <span class="muted">${CAT[p.cat]}</span>
+      <h2>${p.name}</h2>
+      <p class="desc">${p.desc}</p>
+      <div class="specs">${Object.entries(p.specs).map(([k,v])=>`<div><span>${k}</span><span>${v}</span></div>`).join('')}</div>
+      ${p.colors.length>1 ? `<div><div class="muted" style="margin-bottom:8px">اللون</div><div class="swatches">${p.colors.map((c,i)=>`<button class="sw" style="background:${c}" data-color="${c}" aria-pressed="${i===0}" aria-label="لون ${i+1}"></button>`).join('')}</div></div>` : ''}
+      <div class="actions">
+        <span class="price" style="font-size:24px">${p.price}<span class="cur">ر.س</span></span>
+        <button class="btn btn-ink" id="modalAdd" ${p.stock===0?'disabled':''}>${p.stock===0?'غير متوفر حاليًا':'أضف إلى السلة'}</button>
+      </div>
+    </div>`;
+  $('#modal').classList.add('on'); $('#modal').setAttribute('aria-hidden','false'); $('#scrim').classList.add('on');
+  bindSpecular();
+  $('#closeModal').onclick = closeAll;
+  $('#modalAdd').onclick = () => { add(id, activeColor); closeAll(); openCart(); };
+  document.querySelectorAll('[data-color]').forEach(b => b.onclick = () => { activeColor=b.dataset.color; document.querySelectorAll('[data-color]').forEach(x=>x.setAttribute('aria-pressed', x===b)); });
+}
+function openCart(){ $('#drawer').classList.add('on'); $('#drawer').setAttribute('aria-hidden','false'); $('#scrim').classList.add('on'); }
+function closeAll(){
+  $('#drawer').classList.remove('on'); $('#drawer').setAttribute('aria-hidden','true');
+  $('#modal').classList.remove('on'); $('#modal').setAttribute('aria-hidden','true');
+  $('#scrim').classList.remove('on');
+}
+
+/* ====== تفاعلات ====== */
+let toastT;
+function toast(text){ const t=$('#toast'); t.textContent=text; t.classList.add('on'); clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove('on'),1800); }
+function bindSpecular(){
+  document.querySelectorAll('.glass').forEach(el => {
+    if(el.dataset.spec) return; el.dataset.spec=1;
+    el.addEventListener('pointermove', e => { const r=el.getBoundingClientRect(); el.style.setProperty('--mx', `${e.clientX-r.left}px`); el.style.setProperty('--my', `${e.clientY-r.top}px`); });
+  });
+}
+function observeReveal(){
+  const io = new IntersectionObserver(es => es.forEach(e => { if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} }), {threshold:.12});
+  document.querySelectorAll('.reveal:not(.in)').forEach(el => io.observe(el));
+}
+
+document.addEventListener('click', e => {
+  const a = e.target.closest('[data-add]'); if(a){ add(a.dataset.add); return; }
+  const o = e.target.closest('[data-open]'); if(o){ openModal(o.dataset.open); return; }
+  const q = e.target.closest('[data-q]'); if(q){ setQty(q.dataset.q, +q.dataset.d); return; }
+  const cp = e.target.closest('[data-copy]'); if(cp){ navigator.clipboard?.writeText(cp.dataset.copy).then(()=>toast('تم النسخ')); return; }
+  const pm = e.target.closest('[data-pay]'); if(pm){ setPay(pm.dataset.pay); return; }
+  const c = e.target.closest('[data-cat]'); if(c){ filter=c.dataset.cat; document.querySelectorAll('[data-cat]').forEach(b=>b.setAttribute('aria-pressed', b===c)); renderGrid(); }
+});
+$('#q').addEventListener('input', e => { query=e.target.value.trim(); renderGrid(); });
+$('#cartBtn').onclick = openCart;
+$('#closeCart').onclick = closeAll;
+$('#scrim').onclick = closeAll;
+$('#checkout').onclick = checkout;
+$('#waOrder').onclick = waOrder;
+$('#waLink').href = `https://wa.me/${STORE.whatsapp}`;
+document.addEventListener('keydown', e => { if(e.key==='Escape') closeAll(); });
+
+renderGrid(); renderCart(); bindSpecular(); observeReveal(); verifyReturn();
+</script>
+</body>
+</html>
