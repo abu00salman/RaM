@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>إدارة الطلبات — RaM Store</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="icon" href="images/favicon.png">
+<link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@600;700;800&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#F3F4F6;--ink:#111318;--ink2:#4B5060;--ink3:#8B90A0;--blue:#2563EB;--blue-soft:#EAF0FF;
+--green:#16A34A;--red:#DC2626;--amber:#D97706;--line:rgba(17,19,24,.09);
+--head:"Alexandria","Tajawal",sans-serif;--body:"Tajawal",sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--body);background:var(--paper);color:var(--ink);padding:16px;max-width:900px;margin:0 auto}
+button,input,select{font:inherit}button{cursor:pointer;border:0;background:none}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px;flex-wrap:wrap}
+h1{font-family:var(--head);font-size:22px}
+h1 small{font-size:12px;color:var(--ink3);font-family:var(--body);font-weight:400;display:block}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:9px 16px;border-radius:10px;font-weight:700;font-size:13px;background:var(--ink);color:#fff}
+.btn.blue{background:var(--blue)}
+.btn.ghost{background:#fff;border:1px solid var(--line);color:var(--ink)}
+.login{background:#fff;border:1px solid var(--line);border-radius:16px;padding:24px;max-width:420px;margin:60px auto;display:flex;flex-direction:column;gap:10px}
+.login input{padding:12px 14px;border-radius:10px;border:1px solid var(--line);outline:none}
+.login input:focus{border-color:var(--blue)}
+.filters{display:flex;gap:6px;overflow:auto;padding-bottom:10px;scrollbar-width:none}
+.filters::-webkit-scrollbar{display:none}
+.filters button{flex:none;padding:7px 14px;border-radius:999px;background:#fff;border:1px solid var(--line);font-size:12.5px;font-weight:500;color:var(--ink2)}
+.filters button[aria-pressed="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.order{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:10px}
+.order .top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.oid{font-family:var(--head);font-weight:700;direction:ltr}
+.chip{font-size:11.5px;font-weight:700;padding:4px 10px;border-radius:999px}
+.total{font-family:var(--head);font-weight:700}
+.meta{font-size:13px;color:var(--ink2);margin-top:6px;line-height:1.9}
+.meta b{color:var(--ink)}
+.lines{font-size:12.5px;color:var(--ink3);margin-top:4px}
+.actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px;align-items:center}
+.actions select{padding:8px 12px;border-radius:10px;border:1px solid var(--line);background:#fff;font-size:13px}
+.act{padding:8px 14px;border-radius:10px;font-size:12.5px;font-weight:700;border:1px solid var(--line);background:#fff}
+.act.ok{background:#EAF7EE;color:var(--green);border-color:#CBE9D4}
+.act.no{background:#FDECEC;color:var(--red);border-color:#F5CFCF}
+.act.ship{background:var(--blue-soft);color:var(--blue);border-color:#CFDFFC}
+.act.wa{background:#E9F9EF;color:#128C4B;border-color:#C9EED7;margin-inline-start:auto}
+.empty{padding:50px;text-align:center;color:var(--ink3);background:#fff;border-radius:14px;border:1px dashed var(--line)}
+.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 18px;border-radius:999px;font-size:13px;opacity:0;transition:.3s;pointer-events:none;white-space:nowrap}
+.toast.on{opacity:1}
+.hint{font-size:12px;color:var(--ink3)}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div class="toast" id="toast"></div>
+<script>
+const API = 'https://ram.abu00salman-r.workers.dev';
+const S = {
+  AWAITING_TRANSFER:{ar:'بانتظار التحويل',bg:'#FEF3E2',c:'#D97706'},
+  INITIATED:{ar:'بدأ الدفع',bg:'#EEF1F6',c:'#4B5060'},
+  CAPTURED:{ar:'مدفوع (بطاقة)',bg:'#EAF7EE',c:'#16A34A'},
+  PAID:{ar:'مدفوع (تحويل)',bg:'#EAF7EE',c:'#16A34A'},
+  ACCEPTED:{ar:'مقبول — جاري التجهيز',bg:'#EAF0FF',c:'#2563EB'},
+  SHIPPED:{ar:'تم الشحن',bg:'#EAF0FF',c:'#2563EB'},
+  DELIVERED:{ar:'تم التسليم',bg:'#E8E8F8',c:'#5B21B6'},
+  REJECTED:{ar:'مرفوض',bg:'#FDECEC',c:'#DC2626'},
+  CANCELLED:{ar:'ملغي',bg:'#FDECEC',c:'#DC2626'},
+  FAILED:{ar:'فشل الدفع',bg:'#FDECEC',c:'#DC2626'},
+};
+const app=document.getElementById('app');
+let KEY=sessionStorage.getItem('ram-admin')||'', FILTER='', ORDERS=[];
+const toast=t=>{const e=document.getElementById('toast');e.textContent=t;e.classList.add('on');setTimeout(()=>e.classList.remove('on'),2000)};
+const fmt=n=>Number(n||0).toLocaleString('en')+' ر.س';
+const when=t=>new Date(t).toLocaleString('ar-SA',{dateStyle:'short',timeStyle:'short'});
+
+function loginView(msg=''){
+  app.innerHTML=`<div class="login">
+    <h1>إدارة الطلبات<small>RaM Store</small></h1>
+    ${msg?`<div style="color:#DC2626;font-size:13px">${msg}</div>`:''}
+    <input id="k" type="password" placeholder="مفتاح الإدارة" value="">
+    <button class="btn blue" id="go">دخول</button>
+    <p class="hint">المفتاح هو قيمة ADMIN_KEY في إعدادات الـ Worker.</p>
+  </div>`;
+  document.getElementById('go').onclick=()=>{KEY=document.getElementById('k').value.trim();sessionStorage.setItem('ram-admin',KEY);load();};
+  document.getElementById('k').onkeydown=e=>{if(e.key==='Enter')document.getElementById('go').click()};
+}
+
+async function load(){
+  if(!KEY) return loginView();
+  app.innerHTML='<div class="empty">جارٍ التحميل…</div>';
+  try{
+    const r=await fetch(`${API}/admin/orders${FILTER?`?status=${FILTER}`:''}`,{headers:{'x-admin-key':KEY}});
+    if(r.status===401){sessionStorage.removeItem('ram-admin');KEY='';return loginView('المفتاح غير صحيح');}
+    const d=await r.json(); if(!r.ok) throw new Error(d.error);
+    ORDERS=d.orders; render();
+  }catch(e){app.innerHTML=`<div class="empty">تعذّر التحميل: ${e.message}</div>`;}
+}
+
+function render(){
+  const filters=['',...Object.keys(S)].map(f=>`<button aria-pressed="${FILTER===f}" data-f="${f}">${f?S[f].ar:'الكل'}</button>`).join('');
+  const list=ORDERS.length?ORDERS.map(o=>{
+    const st=S[o.status]||{ar:o.status,bg:'#EEE',c:'#333'};
+    const c=o.customer||{}; const phone=(c.phone||'').replace(/^0/,'966');
+    const lines=(o.lines||[]).map(l=>`${l.name||l.id} ×${l.qty}`).join('، ');
+    const waMsg=encodeURIComponent(`مرحبًا ${c.name||''}، بخصوص طلبك ${o.id} من متجر رام:`);
+    return `<div class="order">
+      <div class="top">
+        <span class="oid">${o.id}</span>
+        <span class="chip" style="background:${st.bg};color:${st.c}">${st.ar}</span>
+        <span class="total">${fmt(o.total)}</span>
+      </div>
+      <div class="meta"><b>${c.name||'—'}</b> · <span dir="ltr">${c.phone||''}</span> · ${c.address||''}<br>
+      ${o.method==='tap'?'دفع إلكتروني':'تحويل بنكي'} · ${when(o.updated)} ${o.charge_id?`· <span dir="ltr" style="font-size:11px;color:#8B90A0">${o.charge_id}</span>`:''}</div>
+      ${lines?`<div class="lines">${lines}</div>`:''}
+      <div class="actions">
+        <button class="act ok" data-s="ACCEPTED" data-o="${o.id}">قبول</button>
+        <button class="act no" data-s="REJECTED" data-o="${o.id}">رفض</button>
+        <button class="act ship" data-s="SHIPPED" data-o="${o.id}">تم الشحن</button>
+        <button class="act" data-s="DELIVERED" data-o="${o.id}">تم التسليم</button>
+        <select data-sel="${o.id}"><option value="">حالة أخرى…</option>${Object.keys(S).map(k=>`<option value="${k}">${S[k].ar}</option>`).join('')}</select>
+        ${phone?`<a class="act wa" target="_blank" href="https://wa.me/${phone}?text=${waMsg}">واتساب العميل</a>`:''}
+      </div>
+    </div>`;
+  }).join(''):`<div class="empty">لا توجد طلبات${FILTER?' بهذه الحالة':''} بعد.</div>`;
+  app.innerHTML=`<header>
+      <h1>إدارة الطلبات<small>${ORDERS.length} طلب${FILTER?` · ${S[FILTER].ar}`:''}</small></h1>
+      <div style="display:flex;gap:6px">
+        <button class="btn ghost" id="rf">تحديث</button>
+        <button class="btn ghost" id="out">خروج</button>
+      </div>
+    </header>
+    <div class="filters">${filters}</div>${list}`;
+  document.getElementById('rf').onclick=load;
+  document.getElementById('out').onclick=()=>{sessionStorage.removeItem('ram-admin');KEY='';loginView();};
+  document.querySelectorAll('[data-f]').forEach(b=>b.onclick=()=>{FILTER=b.dataset.f;load();});
+  document.querySelectorAll('[data-s]').forEach(b=>b.onclick=()=>setStatus(b.dataset.o,b.dataset.s));
+  document.querySelectorAll('[data-sel]').forEach(s=>s.onchange=()=>{if(s.value)setStatus(s.dataset.sel,s.value);});
+}
+
+async function setStatus(order,status){
+  try{
+    const r=await fetch(`${API}/admin/status`,{method:'POST',headers:{'Content-Type':'application/json','x-admin-key':KEY},body:JSON.stringify({order,status})});
+    const d=await r.json(); if(!r.ok) throw new Error(d.error);
+    toast(`تم: ${order} → ${S[status].ar}`);
+    const o=ORDERS.find(x=>x.id===order); if(o){o.status=status;o.updated=Date.now();}
+    render();
+  }catch(e){toast('خطأ: '+e.message);}
+}
+load();
+</script>
+</body>
+</html>
