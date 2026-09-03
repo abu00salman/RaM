@@ -394,7 +394,7 @@ footer .flinks{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margi
 
 <footer>
   <img class="flogo" src="images/logo-full.png" alt="RaM Store — إكسسوارات وأجهزة">
-  <div class="flinks"><a href="#cat-iphone">آيفون</a><a href="#cat-ipad">آيباد</a><a href="#cat-android">أندرويد</a><a href="#cat-tablet">تابلت</a><a href="#cat-pc">كمبيوتر</a><a class="waLink" href="#" target="_blank">تواصل معنا 0595599177</a></div>
+  <div class="flinks"><a href="#cat-iphone">آيفون</a><a href="#cat-ipad">آيباد</a><a href="#cat-android">أندرويد</a><a href="#cat-tablet">تابلت</a><a href="#cat-pc">كمبيوتر</a><a href="track.html">تتبع الطلب</a><a class="waLink" href="#" target="_blank">تواصل معنا 0595599177</a></div>
   <p>© 2026 RaM Store · الأسعار شاملة الضريبة</p>
 </footer>
 
@@ -622,6 +622,7 @@ async function transferOrder(c){
       </div>
       <div class="cta-row">
         <a class="btn btn-ink" target="_blank" href="https://wa.me/${STORE.whatsapp}?text=${encodeURIComponent(msg)}">${svg('i-chat')} أرسل الإيصال عبر واتساب</a>
+        <a class="btn btn-outline" href="track.html?order=${order}">تتبع الطلب</a>
       </div>
     </div>`;
   bindSpecular();
@@ -646,7 +647,7 @@ async function verifyReturn(){
     const d = await r.json();
     if(d.status==='CAPTURED'){
       for(const k in cart) delete cart[k]; save(); renderCart();
-      box.innerHTML = `<div class="status glass"><div class="ic">${svg('i-check')}</div><h2>تم الدفع بنجاح</h2><p>وصلنا طلبك وسنتواصل معك على ${d.phone||'رقمك'} لتأكيد التوصيل.</p><div class="ref">Order ${d.order} · ${tapId}</div></div>`;
+      box.innerHTML = `<div class="status glass"><div class="ic">${svg('i-check')}</div><h2>تم الدفع بنجاح</h2><p>وصلنا طلبك وسنتواصل معك على ${d.phone||'رقمك'} لتأكيد التوصيل.</p><div class="ref">Order ${d.order} · ${tapId}</div><a class="btn btn-outline" style="margin-top:14px" href="track.html?order=${d.order}">تتبع الطلب</a></div>`;
     }else{
       box.innerHTML = `<div class="status glass fail"><div class="ic">${svg('i-x')}</div><h2>لم يكتمل الدفع</h2><p>${d.message||'لم يُخصم أي مبلغ.'} سلتك محفوظة، يمكنك المحاولة مجددًا.</p><div class="ref">${tapId}</div></div>`;
     }

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>تتبع الطلب — RaM Store</title>
+<link rel="icon" href="images/favicon.png">
+<link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@600;700;800&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#F3F4F6;--ink:#111318;--ink2:#4B5060;--ink3:#8B90A0;--blue:#2563EB;--blue-soft:#EAF0FF;
+--green:#16A34A;--red:#DC2626;--line:rgba(17,19,24,.09);
+--head:"Alexandria","Tajawal",sans-serif;--body:"Tajawal",sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--body);background:var(--paper);color:var(--ink);min-height:100vh;padding:16px}
+button,input{font:inherit}button{cursor:pointer;border:0}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:520px;margin:0 auto}
+.brand{display:flex;align-items:center;gap:10px;justify-content:center;padding:18px 0 22px}
+.brand img{height:40px}
+.brand .en{font-family:var(--head);font-weight:700;font-size:20px;direction:ltr}
+.brand .en b{color:var(--blue)}
+.card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:22px}
+h1{font-family:var(--head);font-size:20px;margin-bottom:4px;text-align:center}
+.sub{font-size:13px;color:var(--ink3);text-align:center;margin-bottom:18px}
+.form{display:flex;flex-direction:column;gap:10px}
+.form input{padding:13px 14px;border-radius:12px;border:1px solid var(--line);outline:none;font-size:15px}
+.form input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(37,99,235,.12)}
+.form input.ltr{direction:ltr;text-align:left}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;padding:13px;border-radius:12px;font-weight:700;font-size:15px;background:var(--blue);color:#fff;transition:.2s}
+.btn:hover{background:#1D4ED8}.btn:disabled{opacity:.55}
+.err{background:#FDECEC;color:var(--red);border:1px solid #F5CFCF;padding:10px 14px;border-radius:12px;font-size:13.5px;text-align:center}
+.result{margin-top:14px}
+.ohead{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:4px}
+.oid{font-family:var(--head);font-weight:700;direction:ltr}
+.total{font-family:var(--head);font-weight:700;color:var(--blue)}
+.hello{font-size:14px;color:var(--ink2);margin-bottom:16px}
+.lines{font-size:13px;color:var(--ink3);margin-bottom:18px;line-height:1.9}
+.timeline{display:flex;flex-direction:column}
+.step{display:grid;grid-template-columns:34px 1fr;gap:12px;position:relative;padding-bottom:26px}
+.step:last-child{padding-bottom:0}
+.step::before{content:"";position:absolute;top:30px;bottom:0;inset-inline-start:16px;width:2px;background:var(--line)}
+.step:last-child::before{display:none}
+.step.done::before{background:var(--green)}
+.dot{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:#fff;border:2px solid var(--line);color:var(--ink3);font-size:15px;z-index:1}
+.step.done .dot{background:var(--green);border-color:var(--green);color:#fff}
+.step.now .dot{background:var(--blue);border-color:var(--blue);color:#fff;box-shadow:0 0 0 5px rgba(37,99,235,.15)}
+.step h3{font-size:14.5px;font-weight:700;padding-top:5px}
+.step p{font-size:12.5px;color:var(--ink3)}
+.step.now h3{color:var(--blue)}
+.dead{background:#FDECEC;border:1px solid #F5CFCF;border-radius:14px;padding:16px;text-align:center}
+.dead h3{color:var(--red);font-size:16px;margin-bottom:4px}
+.dead p{font-size:13px;color:var(--ink2)}
+.wa{margin-top:16px;display:flex;align-items:center;justify-content:center;gap:8px;padding:11px;border-radius:12px;background:#E9F9EF;color:#128C4B;font-weight:700;font-size:13.5px;border:1px solid #C9EED7}
+.again{margin-top:10px;width:100%;padding:11px;border-radius:12px;background:var(--paper);font-weight:500;font-size:13.5px;color:var(--ink2)}
+.foot{text-align:center;font-size:12.5px;color:var(--ink3);padding:18px}
+.foot a{color:var(--blue);font-weight:700}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="brand" href="/"><img src="images/logo-mark.png" alt=""><span class="en">Ra<b>M</b> Store</span></a>
+  <div class="card" id="card"></div>
+  <p class="foot"><a href="/">⌂ العودة للمتجر</a></p>
+</div>
+<script>
+const API = 'https://ram.abu00salman-r.workers.dev';
+const WA = '966595599177';
+const card = document.getElementById('card');
+const qs = new URLSearchParams(location.search);
+
+const FLOW_TAP = ['INITIATED','CAPTURED','ACCEPTED','SHIPPED','DELIVERED'];
+const FLOW_TRF = ['AWAITING_TRANSFER','PAID','ACCEPTED','SHIPPED','DELIVERED'];
+const LABEL = {
+  INITIATED:['استلمنا الطلب','سجّلنا طلبك وبانتظار اكتمال الدفع'],
+  AWAITING_TRANSFER:['بانتظار التحويل','حوّل المبلغ وأرسل الإيصال عبر واتساب'],
+  CAPTURED:['تم الدفع','وصلنا المبلغ بنجاح'],
+  PAID:['تأكدنا من التحويل','وصلنا المبلغ بنجاح'],
+  ACCEPTED:['جاري التجهيز','نجهّز منتجاتك للشحن'],
+  SHIPPED:['تم الشحن','طلبك في الطريق إليك'],
+  DELIVERED:['تم التسليم','نتمنى أن ينال إعجابك 💙'],
+};
+const DEAD = {
+  REJECTED:['نعتذر، الطلب مرفوض','تواصل معنا عبر واتساب لمعرفة السبب أو استرداد المبلغ'],
+  CANCELLED:['الطلب ملغي','إن كان لديك استفسار تواصل معنا عبر واتساب'],
+  FAILED:['لم يكتمل الدفع','لم يُخصم أي مبلغ. يمكنك المحاولة مجددًا من المتجر'],
+};
+
+function formView(msg=''){
+  card.innerHTML = `
+    <h1>تتبع طلبك</h1>
+    <p class="sub">أدخل رقم الطلب (مثل RS-XXXX) ورقم الجوال المستخدم في الطلب</p>
+    ${msg?`<div class="err" style="margin-bottom:10px">${msg}</div>`:''}
+    <div class="form">
+      <input id="o" class="ltr" placeholder="RS-XXXXXXX" value="${qs.get('order')||''}" autocomplete="off">
+      <input id="p" class="ltr" placeholder="05xxxxxxxx" inputmode="tel" autocomplete="tel">
+      <button class="btn" id="go">عرض حالة الطلب</button>
+    </div>`;
+  document.getElementById('go').onclick = check;
+  card.querySelectorAll('input').forEach(i=>i.onkeydown=e=>{if(e.key==='Enter')check()});
+}
+
+async function check(){
+  const order=document.getElementById('o').value.trim().toUpperCase();
+  const phone=document.getElementById('p').value.trim();
+  const btn=document.getElementById('go'); btn.disabled=true; btn.textContent='جارٍ البحث…';
+  try{
+    const r=await fetch(`${API}/track?order=${encodeURIComponent(order)}&phone=${encodeURIComponent(phone)}`);
+    const d=await r.json();
+    if(!r.ok) throw new Error(d.error||'تعذّر الوصول');
+    show(d);
+  }catch(e){ formView(e.message); }
+}
+
+function show(d){
+  const fmt=n=>Number(n||0).toLocaleString('en')+' ر.س';
+  if(DEAD[d.status]){
+    card.innerHTML=`
+      <div class="ohead"><span class="oid">${d.order}</span><span class="total">${fmt(d.total)}</span></div>
+      <div class="dead"><h3>${DEAD[d.status][0]}</h3><p>${DEAD[d.status][1]}</p></div>
+      <a class="wa" href="https://wa.me/${WA}?text=${encodeURIComponent('استفسار عن الطلب '+d.order)}" target="_blank">تواصل عبر واتساب</a>
+      <button class="again" onclick="formView()">تتبع طلب آخر</button>`;
+    return;
+  }
+  const flow = d.method==='transfer' ? FLOW_TRF : FLOW_TAP;
+  let idx = flow.indexOf(d.status); if(idx<0) idx=0;
+  const steps = flow.map((s,i)=>{
+    const cls = i<idx?'done':i===idx?'now':'';
+    const icon = i<idx?'✓':i===idx?'●':(i+1);
+    return `<div class="step ${cls}"><span class="dot">${icon}</span><div><h3>${LABEL[s][0]}</h3><p>${LABEL[s][1]}</p></div></div>`;
+  }).join('');
+  card.innerHTML=`
+    <div class="ohead"><span class="oid">${d.order}</span><span class="total">${fmt(d.total)}</span></div>
+    <p class="hello">${d.name?`مرحبًا ${d.name}، `:''}آخر تحديث: ${new Date(d.updated).toLocaleString('ar-SA',{dateStyle:'medium',timeStyle:'short'})}</p>
+    ${d.lines?.length?`<div class="lines">${d.lines.map(l=>`${l.name} ×${l.qty}`).join('، ')}</div>`:''}
+    <div class="timeline">${steps}</div>
+    <a class="wa" href="https://wa.me/${WA}?text=${encodeURIComponent('استفسار عن الطلب '+d.order)}" target="_blank">استفسار عبر واتساب</a>
+    <button class="again" onclick="formView()">تتبع طلب آخر</button>`;
+}
+formView();
+</script>
+</body>
+</html>
