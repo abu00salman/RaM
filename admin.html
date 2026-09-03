@@ -108,7 +108,7 @@ function render(){
         <span class="total">${fmt(o.total)}</span>
       </div>
       <div class="meta"><b>${c.name||'—'}</b> · <span dir="ltr">${c.phone||''}</span> · ${c.address||''}<br>
-      ${o.method==='tap'?'دفع إلكتروني':'تحويل بنكي'} · ${when(o.updated)} ${o.charge_id?`· <span dir="ltr" style="font-size:11px;color:#8B90A0">${o.charge_id}</span>`:''}</div>
+      ${o.method==='tap'?'دفع إلكتروني':'تحويل بنكي'}${c.delivery?` · ${c.delivery}`:''} · ${when(o.updated)} ${o.charge_id?`· <span dir="ltr" style="font-size:11px;color:#8B90A0">${o.charge_id}</span>`:''}</div>
       ${lines?`<div class="lines">${lines}</div>`:''}
       <div class="actions">
         <button class="act ok" data-s="ACCEPTED" data-o="${o.id}">قبول</button>
