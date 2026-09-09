@@ -145,6 +145,34 @@ h1 em{font-style:normal;color:var(--blue)}
   .features div{padding:12px 14px}
 }
 
+/* ---- بطل iPhone Duo الفخم ---- */
+.hero.duo{color:#fff;background:linear-gradient(160deg,#0B0F1A 0%,#151A26 45%,#16213D 100%);border-color:rgba(255,255,255,.12);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.14), 0 30px 70px -30px rgba(11,15,26,.7)}
+.hero.duo .glow{background:radial-gradient(circle, rgba(37,99,235,.45), transparent 65%);top:-18%;left:-10%;width:60%}
+.hero.duo .glow.b{background:radial-gradient(circle, rgba(232,217,196,.22), transparent 65%);top:auto;bottom:-22%;left:auto;right:-6%;width:55%}
+.hero.duo .arc{border-color:rgba(255,255,255,.12)}
+.hero.duo .arc.b{border-color:rgba(127,168,255,.18)}
+.hero.duo .kicker{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.16);color:rgba(255,255,255,.85)}
+.hero.duo .eyebrow{font-family:var(--head);font-weight:600;font-size:15px;letter-spacing:.12em;color:#93B4FF;direction:ltr;text-align:start;margin-bottom:-6px}
+.hero.duo h1{font-size:clamp(36px,5.2vw,66px);line-height:1.15;letter-spacing:-.02em;font-weight:800}
+.hero.duo h1 em{color:#93B4FF;font-weight:500}
+.hero.duo .lead{color:rgba(255,255,255,.72);font-weight:300;max-width:46ch}
+.hero.duo .btn-ghost{background:rgba(255,255,255,.08);color:#fff;border-color:rgba(255,255,255,.22)}
+.hero.duo .from-price{font-size:14px;color:rgba(255,255,255,.7);margin-top:2px}
+.hero.duo .from-price b{font-family:var(--head);font-size:22px;color:#fff;margin:0 4px}
+.hero.duo .perks{background:rgba(255,255,255,.05);border-top-color:rgba(255,255,255,.1)}
+.hero.duo .perks div{border-color:rgba(255,255,255,.1)}
+.hero.duo .perks svg{color:#93B4FF}
+.hero.duo .perks p{color:rgba(255,255,255,.55)}
+.hero.duo .visual{min-height:400px}
+.hero.duo .visual .duo-svg{position:absolute;inset:0;width:100%;height:100%}
+.hero.duo .visual img{inset:10px;width:calc(100% - 20px);height:calc(100% - 20px);object-fit:contain;border-radius:0}
+@media(max-width:900px){
+  .hero.duo .visual{min-height:min(92vw,440px);margin:0}
+  .hero.duo .copy{padding:26px 18px 4px}
+  .hero.duo .perks p{display:none}
+}
+
 /* ---- بانرا الفئتين ---- */
 .pair{margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .pair a{position:relative;border-radius:var(--r-xl);overflow:hidden;min-height:180px;display:flex;align-items:flex-end;padding:18px;color:#fff;isolation:isolate}
@@ -158,14 +186,14 @@ h1 em{font-style:normal;color:var(--blue)}
 
 /* ---- الأجهزة ---- */
 .devices{margin-top:20px;display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
-.dev{background:var(--glass);border:1px solid var(--gline);box-shadow:inset 0 1px 0 #fff,var(--shadow-sm);
+.dev{min-height:76px;background:var(--glass);border:1px solid var(--gline);box-shadow:inset 0 1px 0 #fff,var(--shadow-sm);
   border-radius:var(--r-lg);padding:14px 6px;display:flex;flex-direction:column;align-items:center;gap:8px;font-size:13px;font-weight:600;transition:transform .2s}
 .dev:active{transform:scale(.96)}
 .dev .ic{width:52px;height:52px;border-radius:50%;background:linear-gradient(160deg,#fff,var(--blue-soft));border:1px solid var(--line);display:grid;place-items:center}
 .dev .ic svg{width:28px;height:28px}
 
 /* ---- الصفوف ---- */
-.row-sec{padding-top:36px;content-visibility:auto;contain-intrinsic-size:auto 460px}
+.row-sec{padding-top:36px}
 .row-head{display:flex;align-items:end;justify-content:space-between;gap:12px;margin-bottom:12px;padding:0 4px}
 h2{font-family:var(--head);font-weight:700;font-size:24px;letter-spacing:-.01em}
 .muted{color:var(--ink-3);font-size:12.5px;display:block}
@@ -331,6 +359,11 @@ footer .flinks a:hover{color:var(--blue)}
 .toast.on{opacity:1;transform:translate(-50%,0)}
 .reveal{opacity:0;transform:translateY(12px);transition:opacity .45s,transform .45s cubic-bezier(.2,.8,.2,1)}
 .reveal.in{opacity:1;transform:none}
+@media(hover:none){.reveal{opacity:1;transform:none;transition:none}}
+.dev[aria-pressed="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.dev[aria-pressed="true"] .ic{background:rgba(255,255,255,.12);border-color:transparent}
+.more{background:none;padding:6px 0;min-height:36px}
+button.more{cursor:pointer}
 
 /* ---- تأثيرات المؤشر: للأجهزة ذات الفأرة فقط (سلاسة اللمس) ---- */
 @media(hover:hover) and (pointer:fine){
@@ -455,44 +488,64 @@ footer .flinks a:hover{color:var(--blue)}
 <main class="wrap" id="top">
   <div id="payStatus"></div>
 
-  <section class="hero">
-    <div class="arc"></div><div class="arc b"></div><div class="glow"></div><div class="glow b"></div><div class="pat"></div>
+  <section class="hero duo">
+    <div class="glow"></div><div class="glow b"></div><div class="arc"></div><div class="arc b"></div>
     <div class="inner">
       <div class="copy">
-        <span class="kicker"><b>جديد</b> وصلت إكسسوارات آيفون 17</span>
-        <h1>متوفر إكسسوارات<br><em>آيفون 17 برو ماكس</em></h1>
-        <p class="lead">اكتشف المجموعة الكاملة من الكفرات، الشواحن، المسكات، حامي العدسات وغيرها — لجوالك ولكل أجهزتك.</p>
+        <span class="kicker"><b>قريبًا في متجرنا</b> الحجز المسبق يبدأ 16 أكتوبر</span>
+        <p class="eyebrow">iPhone Duo</p>
+        <h1>مرحبتين.<br><em>أول آيفون قابل للطي.</em></h1>
+        <p class="lead">شاشة تنفتح على عالم أوسع، بتصميم من التيتانيوم ينطوي براحة يد واحدة. يتوفر ابتداءً من 23 أكتوبر — سجّل بريدك وكن أول من يعلم.</p>
         <div class="cta-row">
-          <a class="btn btn-blue" href="#cat-iphone">تسوّق كفرات الآيفون</a>
-          <a class="btn btn-ghost" href="#featured">عروض الأسبوع</a>
+          <button class="btn btn-blue" data-notify="iphone-duo"><svg width="18" height="18"><use href="#i-bell"/></svg> نبّهني عند التوفر</button>
+          <a class="btn btn-ghost" href="#cat-iphone">إكسسوارات الآيفون</a>
         </div>
+        <p class="from-price">ابتداءً من <b>9,499</b> ر.س</p>
       </div>
       <div class="visual">
-        <svg class="phones" viewBox="0 0 600 420" aria-hidden="true">
+        <svg class="phones duo-svg" viewBox="0 0 640 460" aria-hidden="true">
           <defs>
-            <linearGradient id="pSilver" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F3F4F6"/><stop offset="1" stop-color="#9CA3AF"/></linearGradient>
-            <linearGradient id="pGold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F5E6C8"/><stop offset="1" stop-color="#B8A07A"/></linearGradient>
-            <linearGradient id="pNavy" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3B5BA9"/><stop offset="1" stop-color="#16244F"/></linearGradient>
-            <linearGradient id="pBlack" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3A3F4B"/><stop offset="1" stop-color="#0B0F1A"/></linearGradient>
-            <linearGradient id="pScreen" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2563EB"/><stop offset=".5" stop-color="#0B1020"/><stop offset="1" stop-color="#7FA8FF"/></linearGradient>
-            <filter id="sh" x="-20%" y="-20%" width="140%" height="160%"><feDropShadow dx="0" dy="24" stdDeviation="18" flood-color="#000" flood-opacity=".45"/></filter>
+            <linearGradient id="dTi" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F4F6FA"/><stop offset=".5" stop-color="#C7CED9"/><stop offset="1" stop-color="#8F98A8"/></linearGradient>
+            <linearGradient id="dTiDark" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3B4150"/><stop offset="1" stop-color="#0E1118"/></linearGradient>
+            <linearGradient id="dSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9DB9E6"/><stop offset=".45" stop-color="#E8D9C4"/><stop offset=".5" stop-color="#6B6560"/><stop offset=".62" stop-color="#C9B893"/><stop offset="1" stop-color="#E9DCC3"/></linearGradient>
+            <linearGradient id="dSkyR" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#86A5D8"/><stop offset=".45" stop-color="#DDCBB1"/><stop offset=".5" stop-color="#57514C"/><stop offset=".62" stop-color="#B8A67F"/><stop offset="1" stop-color="#D9CBB0"/></linearGradient>
+            <linearGradient id="dSpec" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".5" stop-color="#fff" stop-opacity=".45"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+            <filter id="dShadow" x="-30%" y="-30%" width="160%" height="170%"><feDropShadow dx="0" dy="30" stdDeviation="22" flood-color="#000" flood-opacity=".55"/></filter>
+            <filter id="dSoft" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="18"/></filter>
           </defs>
-          <g filter="url(#sh)">
-            <g transform="translate(80 60) rotate(-8)"><rect width="150" height="310" rx="30" fill="url(#pSilver)"/><rect x="14" y="14" width="66" height="66" rx="18" fill="rgba(0,0,0,.15)"/><circle cx="34" cy="34" r="11" fill="#1F2430"/><circle cx="60" cy="34" r="11" fill="#1F2430"/><circle cx="34" cy="60" r="11" fill="#1F2430"/></g>
-            <g transform="translate(180 70) rotate(-8)"><rect width="150" height="310" rx="30" fill="url(#pGold)"/><rect x="14" y="14" width="66" height="66" rx="18" fill="rgba(0,0,0,.15)"/><circle cx="34" cy="34" r="11" fill="#1F2430"/><circle cx="60" cy="34" r="11" fill="#1F2430"/><circle cx="34" cy="60" r="11" fill="#1F2430"/></g>
-            <g transform="translate(280 80) rotate(-8)"><rect width="150" height="310" rx="30" fill="url(#pNavy)"/><rect x="14" y="14" width="66" height="66" rx="18" fill="rgba(0,0,0,.25)"/><circle cx="34" cy="34" r="11" fill="#0B0F1A"/><circle cx="60" cy="34" r="11" fill="#0B0F1A"/><circle cx="34" cy="60" r="11" fill="#0B0F1A"/></g>
-            <g transform="translate(380 90) rotate(-8)"><rect width="150" height="310" rx="30" fill="url(#pBlack)"/><rect x="14" y="14" width="66" height="66" rx="18" fill="rgba(255,255,255,.08)"/><circle cx="34" cy="34" r="11" fill="#000"/><circle cx="60" cy="34" r="11" fill="#000"/><circle cx="34" cy="60" r="11" fill="#000"/></g>
-            <g transform="translate(470 100) rotate(-8)"><rect width="150" height="310" rx="30" fill="#0B0F1A"/><rect x="7" y="7" width="136" height="296" rx="24" fill="url(#pScreen)"/><rect x="48" y="16" width="54" height="14" rx="7" fill="#0B0F1A"/><path d="M30 120c40-40 80 20 120-30" stroke="rgba(255,255,255,.5)" stroke-width="10" fill="none" stroke-linecap="round"/></g>
+          <ellipse cx="320" cy="420" rx="250" ry="18" fill="#000" opacity=".35" filter="url(#dSoft)"/>
+          <g filter="url(#dShadow)">
+            <!-- الجهة اليسرى (مائلة للداخل) -->
+            <path d="M318 70 L120 108 Q106 111 106 126 L106 372 Q106 387 120 384 L318 346 Z" fill="url(#dTi)"/>
+            <path d="M310 84 L128 118 L128 366 L310 332 Z" fill="url(#dSky)"/>
+            <path d="M310 84 L128 118 L128 200 L310 166 Z" fill="url(#dSpec)" opacity=".35"/>
+            <!-- الجهة اليمنى -->
+            <path d="M322 70 L520 108 Q534 111 534 126 L534 372 Q534 387 520 384 L322 346 Z" fill="url(#dTi)"/>
+            <path d="M330 84 L512 118 L512 366 L330 332 Z" fill="url(#dSkyR)"/>
+            <path d="M330 84 L512 118 L512 200 L330 166 Z" fill="url(#dSpec)" opacity=".28"/>
+            <circle cx="494" cy="142" r="6" fill="#0B0F1A"/>
+            <!-- المفصلة -->
+            <path d="M318 70 L322 70 L322 346 L318 346 Z" fill="#8F98A8"/>
+            <path d="M319 72 L321 72 L321 344 L319 344 Z" fill="#fff" opacity=".6"/>
+            <!-- المؤشر السفلي -->
+            <rect x="180" y="352" width="110" height="4" rx="2" fill="#fff" opacity=".75" transform="skewY(-10.5)"/>
+            <rect x="352" y="225" width="110" height="4" rx="2" fill="#fff" opacity=".75" transform="skewY(10.5)"/>
           </g>
-          <ellipse cx="330" cy="405" rx="280" ry="12" fill="rgba(255,255,255,.08)"/>
+          <!-- الجهاز مطويًا في الخلفية -->
+          <g opacity=".92" transform="translate(-4 46)">
+            <rect x="8" y="150" width="88" height="186" rx="18" fill="url(#dTiDark)" filter="url(#dShadow)"/>
+            <rect x="20" y="164" width="38" height="38" rx="12" fill="rgba(255,255,255,.08)"/>
+            <circle cx="32" cy="176" r="8" fill="#000"/><circle cx="48" cy="190" r="8" fill="#000"/>
+            <circle cx="32" cy="176" r="3" fill="#7FA8FF" opacity=".8"/>
+          </g>
         </svg>
-        <img id="heroImg" alt="إكسسوارات آيفون 17 برو ماكس">
+        <img id="heroImg" alt="iPhone Duo">
       </div>
     </div>
     <div class="perks">
-      <div><svg><use href="#i-shield"/></svg><div><h3>حماية متكاملة</h3><p>لجهازك من كل الجهات</p></div></div>
-      <div><svg><use href="#i-bolt"/></svg><div><h3>شحن أسرع وأكثر أمانًا</h3><p>شواحن وكيابل معتمدة</p></div></div>
-      <div><svg><use href="#i-phone"/></svg><div><h3>تصميم أنيق</h3><p>وجودة عالية</p></div></div>
+      <div><svg><use href="#i-bell"/></svg><div><h3>كن أول من يعلم</h3><p>سجّل بريدك ونبلّغك يوم التوفر</p></div></div>
+      <div><svg><use href="#i-shield"/></svg><div><h3>كفرات وحماية جاهزة</h3><p>إكسسوارات Duo منذ اليوم الأول</p></div></div>
+      <div><svg><use href="#i-lock"/></svg><div><h3>حجز آمن</h3><p>مدى · بطاقة · Apple Pay</p></div></div>
     </div>
   </section>
 
@@ -647,6 +700,11 @@ function renderGrid(){
     const list = PRODUCTS.filter(p => (p.name+' '+p.desc+' '+(p.keywords||'')+' '+CAT[p.cat]).toLowerCase().includes(q));
     root.innerHTML = `<section class="row-sec"><div class="row-head"><h2>نتائج "${query}"</h2><span class="muted">${list.length} منتج</span></div>
       <div class="grid">${list.length ? list.map(cardHTML).join('') : `<div class="empty glass">لا نتائج. جرّب كلمة أقصر.</div>`}</div></section>`;
+  }else if(filter!=='all'){
+    const c = filter, list = PRODUCTS.filter(p=>p.cat===c);
+    root.innerHTML = `<section class="row-sec" id="cat-${c}">
+      <div class="row-head"><div><h2>${CAT[c]}</h2><span class="muted">${CAT_TAG[c]} · ${list.length} منتج</span></div><button class="more" data-cat="all">عرض كل الأقسام</button></div>
+      <div class="grid">${list.map(cardHTML).join('')}</div></section>`;
   }else{
     const feat = [...PRODUCTS.filter(p=>p.soon), ...PRODUCTS.filter(p=>p.was)];
     root.innerHTML = `<section class="row-sec" id="featured"><div class="row-head"><div><h2>منتجات مميزة</h2><span class="muted">عروض هذا الأسبوع</span></div><a class="more" href="#cat-iphone">عرض الكل</a></div><div class="rail">${feat.map(cardHTML).join('')}</div></section>` +
@@ -797,7 +855,14 @@ document.addEventListener('click', e => {
   const cp = e.target.closest('[data-copy]'); if(cp){ navigator.clipboard?.writeText(cp.dataset.copy).then(()=>toast('تم النسخ')); return; }
   const pm = e.target.closest('[data-pay]'); if(pm){ setPay(pm.dataset.pay); return; }
   const sm = e.target.closest('[data-ship]'); if(sm){ shipMethod = sm.dataset.ship; renderCart(); return; }
-  const c = e.target.closest('[data-cat]'); if(c){ $('#q').value=''; query=''; renderGrid(); document.getElementById('cat-'+c.dataset.cat)?.scrollIntoView({behavior:'smooth',block:'start'}); }
+  const c = e.target.closest('[data-cat]'); if(c){
+    filter = c.dataset.cat; $('#q').value=''; query='';
+    document.querySelectorAll('.dev[data-cat]').forEach(b=>b.setAttribute('aria-pressed', b.dataset.cat===filter));
+    renderGrid();
+    (document.getElementById('rows')).scrollIntoView({behavior:'smooth',block:'start'});
+    return;
+  }
+  const cl = e.target.closest('a[href^="#cat-"]'); if(cl && filter!=='all'){ filter='all'; document.querySelectorAll('.dev[data-cat]').forEach(b=>b.setAttribute('aria-pressed','false')); renderGrid(); }
 });
 $('#q').addEventListener('input', e => { query=e.target.value.trim(); renderGrid(); });
 $('#cartBtn').onclick = openCart;
@@ -812,9 +877,9 @@ document.querySelectorAll('.waLink').forEach(a=>a.href=`https://wa.me/${STORE.wh
 document.addEventListener('keydown', e => { if(e.key==='Escape') closeAll(); });
 
 renderGrid(); renderCart(); bindSpecular(); observeReveal();
-$('#heroImg').src = `${STORE.images}/hero.jpg`;
-$('#heroImg').onerror = function(){ if(!this.dataset.f){ this.dataset.f=1; this.src=`${STORE.images}/hero.png`; } else this.remove(); };
-$('#heroImg').onload = function(){ document.querySelector('.hero .phones').style.display='none'; };
+$('#heroImg').src = `${STORE.images}/hero-duo.jpg`;
+$('#heroImg').onerror = function(){ this.remove(); };
+$('#heroImg').onload = function(){ const p=document.querySelector('.hero .phones'); if(p) p.style.display='none'; };
 
 </script>
 </body>
