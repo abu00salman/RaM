@@ -840,6 +840,39 @@ async function confirmPayment(order, geideaOrderId){
   }
 }
 
+async function transferOrder(c){
+  const btn = $('#checkout'); btn.disabled = true; btn.querySelector('span').textContent = 'جارٍ تسجيل الطلب…';
+  const t = totals(), lines = Object.values(cart).map(l => { const p=PRODUCTS.find(x=>x.id===l.id); return {id:l.id, name:p.name, qty:l.qty, price:p.price}; });
+  let order;
+  try{
+    const r = await fetch(`${STORE.api}/order`, {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({items: orderLines(), customer: c, delivery: currentDelivery()?.id})});
+    const d = await r.json(); if(!r.ok) throw new Error(d.error); order = d.order;
+  }catch(e){ order = 'RS-' + Date.now().toString(36).toUpperCase(); }
+  for(const k in cart) delete cart[k]; save(); renderCart(); closeAll();
+  btn.disabled = false; setPay('transfer');
+
+  const msg = `تحويل بنكي — طلب ${order}\n\n${lines.map(l=>`• ${l.name} (${l.qty}×) — ${fmt(l.price*l.qty)}`).join('\n')}\n\nالإجمالي: ${fmt(t.total)}\nالاستلام: ${t.delivery?.name||''}\nالاسم: ${c.name}\nالجوال: ${c.phone}\nالعنوان: ${c.address||'—'}\n\n(أرفق صورة الإيصال هنا)`;
+  const b = STORE.bank;
+  $('#payStatus').innerHTML = `
+    <div class="status transfer">
+      <div class="ic">${svg('i-bank')}</div>
+      <h2>طلبك مسجّل: <span style="direction:ltr;unicode-bidi:isolate">${order}</span></h2>
+      <p>حوّل المبلغ ثم أرسل صورة الإيصال. نحجز المنتجات لك 24 ساعة.</p>
+      <div class="kv">
+        <div><small>البنك</small><b style="direction:rtl">${b.name}</b></div>
+        <div><small>باسم</small><b>${b.holder}</b></div>
+        <div><small>IBAN</small><b>${b.iban}</b><button class="copy" data-copy="${b.iban.replace(/\s/g,'')}">نسخ</button></div>
+        <div><small>المبلغ</small><b>${fmt(t.total)}</b><button class="copy" data-copy="${t.total}">نسخ</button></div>
+        <div><small>ملاحظة التحويل</small><b>${order}</b><button class="copy" data-copy="${order}">نسخ</button></div>
+      </div>
+      <div class="cta-row">
+        <a class="btn btn-ink" target="_blank" href="https://wa.me/${STORE.whatsapp}?text=${encodeURIComponent(msg)}">${svg('i-chat')} أرسل الإيصال عبر واتساب</a>
+        <a class="btn btn-outline" href="track.html?order=${order}">تتبع الطلب</a>
+      </div>
+    </div>`;
+  $('#payStatus').scrollIntoView({behavior:'smooth'});
+}
+
 function waOrder(){
   const t = totals();
   const lines = Object.values(cart).map(l => { const p=PRODUCTS.find(x=>x.id===l.id); return `• ${p.name} (${l.qty}×) — ${fmt(p.price*l.qty)}`; });
@@ -847,6 +880,85 @@ function waOrder(){
   window.open(`https://wa.me/${STORE.whatsapp}?text=${encodeURIComponent(msg)}`, '_blank');
 }
 
+
+/* ====== أدوات مساعدة ====== */
+let toastT;
+function toast(text){ const t=$('#toast'); t.textContent=text; t.classList.add('on'); clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove('on'),2200); }
+function bindSpecular(){}
+function observeReveal(){
+  const els = document.querySelectorAll('.reveal:not(.in)');
+  if(!('IntersectionObserver' in window)){ els.forEach(el=>el.classList.add('in')); return; }
+  const io = new IntersectionObserver(es => es.forEach(e => { if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } }), {threshold:.05, rootMargin:'80px'});
+  els.forEach(el => io.observe(el));
+}
+
+/* ====== النوافذ والسلة ====== */
+function openNotify(id){
+  const p = PRODUCTS.find(x=>x.id===id); if(!p) return;
+  $('#panel').innerHTML = `
+    <button class="close" id="closeModal" aria-label="إغلاق">${svg('i-x')}</button>
+    <div class="notify-box" style="grid-column:1/-1;max-width:420px;margin:14px auto;width:100%">
+      <span class="big">${svg('i-bell')}</span>
+      <h2>كن أول من يعلم</h2>
+      <p>سجّل بريدك وسنراسلك فور توفر <b>${p.name.split('—')[0].trim()}</b> في المتجر.</p>
+      <div class="form">
+        <input id="nEmail" type="email" style="direction:ltr;text-align:left" placeholder="you@email.com" autocomplete="email">
+        <button class="btn btn-blue" id="nGo">${svg('i-bell')} <span>نبّهني</span></button>
+      </div>
+      <p class="hint">لن نستخدم بريدك لأي شيء آخر.</p>
+    </div>`;
+  $('#modal').classList.add('on'); $('#modal').setAttribute('aria-hidden','false'); $('#scrim').classList.add('on');
+  $('#closeModal').onclick = closeAll;
+  const go = $('#nGo');
+  go.onclick = async () => {
+    const email = $('#nEmail').value.trim();
+    if(!/^\S+@\S+\.\S+$/.test(email)){ $('#nEmail').classList.add('err'); return; }
+    $('#nEmail').classList.remove('err');
+    go.disabled = true; go.querySelector('span').textContent = 'جارٍ التسجيل…';
+    try{
+      const r = await fetch(`${STORE.api}/notify`, {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({email, product:id})});
+      const d = await r.json(); if(!r.ok) throw new Error(d.error||'تعذّر التسجيل');
+      document.querySelector('.notify-box').innerHTML = `<span class="big" style="background:#EAF7EE;color:#16A34A">${svg('i-check')}</span><h2>تم التسجيل ✓</h2><p>سنراسلك على <b style="direction:ltr;unicode-bidi:isolate">${email}</b> فور التوفر.</p><button class="btn btn-outline" id="nClose" style="margin-top:6px">إغلاق</button>`;
+      $('#nClose').onclick = closeAll;
+    }catch(e){ toast(e.message); go.disabled=false; go.querySelector('span').textContent='نبّهني'; }
+  };
+  $('#nEmail').onkeydown = e => { if(e.key==='Enter') go.click(); };
+}
+let activeColor = null;
+function openModal(id){
+  const p = PRODUCTS.find(x=>x.id===id); if(!p) return;
+  activeColor = p.colors ? p.colors[0] : null;
+  $('#panel').innerHTML = `
+    <button class="close" id="closeModal" aria-label="إغلاق">${svg('i-x')}</button>
+    <div class="art">${artHTML(p)}</div>
+    <div class="body">
+      <span class="muted">${CAT[p.cat]}</span>
+      <h2>${p.name}</h2>
+      <p class="desc">${p.desc}</p>
+      <div class="specs">${Object.entries(p.specs||{}).map(([k,v])=>`<div><span>${k}</span><span>${v}</span></div>`).join('')}</div>
+      ${(p.colors&&p.colors.length>1) ? `<div><div class="muted" style="margin-bottom:8px">اللون</div><div class="swatches">${p.colors.map((c,i)=>`<button class="sw" style="background:${c}" data-color="${c}" aria-pressed="${i===0}" aria-label="لون ${i+1}"></button>`).join('')}</div></div>` : ''}
+      <div class="actions">
+        <span class="price" style="font-size:24px">${p.soon?'<small class="from">ابتداءً من </small>':''}${p.price.toLocaleString('en')}<span class="cur"> ر.س</span></span>
+        ${p.soon
+          ? `<button class="btn btn-ink" id="modalNotify">${svg('i-bell')} نبّهني عند التوفر</button>`
+          : `<button class="btn btn-blue" id="modalAdd" ${p.stock===0?'disabled':''}>${p.stock===0?'غير متوفر حاليًا':'أضف إلى السلة'}</button>`}
+      </div>
+    </div>`;
+  $('#modal').classList.add('on'); $('#modal').setAttribute('aria-hidden','false'); $('#scrim').classList.add('on');
+  $('#closeModal').onclick = closeAll;
+  const ma = $('#modalAdd'); if(ma) ma.onclick = () => { add(id, activeColor); closeAll(); openCart(); };
+  const mn = $('#modalNotify'); if(mn) mn.onclick = () => openNotify(id);
+  document.querySelectorAll('[data-color]').forEach(b => b.onclick = () => { activeColor=b.dataset.color; document.querySelectorAll('[data-color]').forEach(x=>x.setAttribute('aria-pressed', x===b)); });
+}
+
+function openCart(){ $('#drawer').classList.add('on'); $('#drawer').setAttribute('aria-hidden','false'); $('#scrim').classList.add('on'); }
+function closeAll(){
+  $('#drawer').classList.remove('on'); $('#drawer').setAttribute('aria-hidden','true');
+  $('#modal').classList.remove('on'); $('#modal').setAttribute('aria-hidden','true');
+  $('#scrim').classList.remove('on');
+}
+
+/* ====== تفاعلات ====== */
 document.addEventListener('click', e => {
   const a = e.target.closest('[data-add]'); if(a){ add(a.dataset.add); return; }
   const o = e.target.closest('[data-open]'); if(o){ openModal(o.dataset.open); return; }
