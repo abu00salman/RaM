@@ -108,7 +108,7 @@ function render(){
         <span class="total">${fmt(o.total)}</span>
       </div>
       <div class="meta"><b>${c.name||'—'}</b> · <span dir="ltr">${c.phone||''}</span> · ${c.address||''}<br>
-      ${o.method==='tap'?'دفع إلكتروني':'تحويل بنكي'}${c.delivery?` · ${c.delivery}`:''} · ${when(o.updated)} ${o.charge_id?`· <span dir="ltr" style="font-size:11px;color:#8B90A0">${o.charge_id}</span>`:''}</div>
+      ${o.method==='transfer'?'تحويل بنكي':'دفع إلكتروني'}${c.delivery?` · ${c.delivery}`:''} · ${when(o.updated)} ${o.charge_id?`· <span dir="ltr" style="font-size:11px;color:#8B90A0">${o.charge_id}</span>`:''}</div>
       ${lines?`<div class="lines">${lines}</div>`:''}
       <div class="actions">
         <button class="act ok" data-s="ACCEPTED" data-o="${o.id}">قبول</button>
@@ -123,16 +123,37 @@ function render(){
   app.innerHTML=`<header>
       <h1>إدارة الطلبات<small>${ORDERS.length} طلب${FILTER?` · ${S[FILTER].ar}`:''}</small></h1>
       <div style="display:flex;gap:6px">
+        <button class="btn ghost" id="nl">قائمة الانتظار</button>
         <button class="btn ghost" id="rf">تحديث</button>
         <button class="btn ghost" id="out">خروج</button>
       </div>
     </header>
     <div class="filters">${filters}</div>${list}`;
   document.getElementById('rf').onclick=load;
+  document.getElementById('nl').onclick=showNotify;
   document.getElementById('out').onclick=()=>{sessionStorage.removeItem('ram-admin');KEY='';loginView();};
   document.querySelectorAll('[data-f]').forEach(b=>b.onclick=()=>{FILTER=b.dataset.f;load();});
   document.querySelectorAll('[data-s]').forEach(b=>b.onclick=()=>setStatus(b.dataset.o,b.dataset.s));
   document.querySelectorAll('[data-sel]').forEach(s=>s.onchange=()=>{if(s.value)setStatus(s.dataset.sel,s.value);});
+}
+
+async function showNotify(){
+  app.innerHTML='<div class="empty">جارٍ التحميل…</div>';
+  try{
+    const r=await fetch(`${API}/admin/notify`,{headers:{'x-admin-key':KEY}});
+    const d=await r.json(); if(!r.ok) throw new Error(d.error);
+    const list=d.list||[];
+    const emails=[...new Set(list.map(x=>x.email))].join(', ');
+    app.innerHTML=`<header><h1>قائمة الانتظار<small>${list.length} تسجيل</small></h1>
+      <div style="display:flex;gap:6px"><button class="btn blue" id="cp">نسخ كل الإيميلات</button><button class="btn ghost" id="bk">رجوع للطلبات</button></div></header>
+      ${list.length?list.map(x=>`<div class="order" style="display:flex;justify-content:space-between;gap:10px;align-items:center">
+        <span style="direction:ltr;font-weight:700">${x.email}</span>
+        <span class="chip" style="background:#EAF0FF;color:#2563EB">${x.product}</span>
+        <span style="font-size:12px;color:#8B90A0">${when(x.created)}</span></div>`).join('')
+      :'<div class="empty">لا تسجيلات بعد.</div>'}`;
+    document.getElementById('bk').onclick=load;
+    document.getElementById('cp').onclick=()=>{navigator.clipboard?.writeText(emails).then(()=>toast('نُسخت '+[...new Set(list.map(x=>x.email))].length+' إيميلات'));};
+  }catch(e){app.innerHTML=`<div class="empty">تعذّر التحميل: ${e.message}</div>`;}
 }
 
 async function setStatus(order,status){
