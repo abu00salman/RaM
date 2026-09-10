@@ -215,6 +215,8 @@ h2{font-family:var(--head);font-weight:700;font-size:24px;letter-spacing:-.01em}
 .ph{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:#fff;z-index:1}
 .card .sale{position:absolute;top:8px;inset-inline-start:8px;z-index:2;font-size:12px;font-weight:700;padding:3px 9px;border-radius:var(--r-pill);background:var(--red);color:#fff;direction:ltr;font-family:var(--head)}
 .sale.soon{background:var(--ink);font-size:11px;direction:rtl}
+.sale.pre{background:var(--blue);font-size:11px;direction:rtl}
+.add-btn.pre{background:var(--blue);border-color:var(--blue);color:#fff}
 .card .stock{position:absolute;bottom:8px;inset-inline-end:8px;z-index:2;font-size:11px;padding:3px 9px;border-radius:var(--r-pill);background:var(--ink);color:#fff}
 .card .info{display:flex;flex-direction:column;gap:4px;padding:0 3px;text-align:start}
 .chip-cat{align-self:flex-start;font-size:11px;background:rgba(255,255,255,.8);border:1px solid var(--line);border-radius:var(--r-pill);padding:2px 9px;color:var(--ink-2)}
@@ -372,6 +374,7 @@ button.more{cursor:pointer}
   .card .art svg{transition:transform .35s}
   .add-btn:hover{background:var(--blue);color:#fff}
   .add-btn.notify:hover{background:var(--ink);color:#fff}
+  .add-btn.pre:hover{background:var(--blue-2);border-color:var(--blue-2)}
   .dev:hover{transform:translateY(-2px)}
   .icon-btn:hover{background:#fff;transform:translateY(-1px)}
   .qty button:hover{background:#fff}
@@ -492,15 +495,15 @@ button.more{cursor:pointer}
     <div class="glow"></div><div class="glow b"></div><div class="arc"></div><div class="arc b"></div>
     <div class="inner">
       <div class="copy">
-        <span class="kicker"><b>قريبًا في متجرنا</b> الحجز المسبق يبدأ 16 أكتوبر</span>
+        <span class="kicker"><b>متوفر للطلب المسبق</b> التسليم يبدأ 23 أكتوبر</span>
         <p class="eyebrow">iPhone Duo</p>
         <h1>مرحبتين.<br><em>أول آيفون قابل للطي.</em></h1>
-        <p class="lead">شاشة تنفتح على عالم أوسع، بتصميم من التيتانيوم ينطوي براحة يد واحدة. يتوفر ابتداءً من 23 أكتوبر — سجّل بريدك وكن أول من يعلم.</p>
+        <p class="lead">شاشة تنفتح على عالم أوسع، بتصميم من التيتانيوم ينطوي براحة يد واحدة. احجز نسختك ضمن أول دفعة تصلنا، والتسليم يبدأ 23 أكتوبر.</p>
         <div class="cta-row">
-          <button class="btn btn-blue" data-notify="iphone-duo"><svg width="18" height="18"><use href="#i-bell"/></svg> نبّهني عند التوفر</button>
+          <button class="btn btn-blue" data-notify="iphone-duo"><svg width="18" height="18"><use href="#i-bell"/></svg> اطلب مسبقًا</button>
           <a class="btn btn-ghost" href="#cat-iphone">إكسسوارات الآيفون</a>
         </div>
-        <p class="from-price">ابتداءً من <b>9,499</b> ر.س</p>
+        <p class="from-price">ابتداءً من <b>8,999</b> ر.س</p>
       </div>
       <div class="visual">
         <svg class="phones duo-svg" viewBox="0 0 640 460" aria-hidden="true">
@@ -543,7 +546,7 @@ button.more{cursor:pointer}
       </div>
     </div>
     <div class="perks">
-      <div><svg><use href="#i-bell"/></svg><div><h3>كن أول من يعلم</h3><p>سجّل بريدك ونبلّغك يوم التوفر</p></div></div>
+      <div><svg><use href="#i-bell"/></svg><div><h3>طلب مسبق مضمون</h3><p>نحجز لك من أول دفعة</p></div></div>
       <div><svg><use href="#i-shield"/></svg><div><h3>كفرات وحماية جاهزة</h3><p>إكسسوارات Duo منذ اليوم الأول</p></div></div>
       <div><svg><use href="#i-lock"/></svg><div><h3>حجز آمن</h3><p>مدى · بطاقة · Apple Pay</p></div></div>
     </div>
@@ -642,7 +645,7 @@ const CAT = {iphone:'آيفون', ipad:'آيباد', android:'أندرويد', t
 const CAT_TAG = {iphone:'جرابات وإكسسوارات', ipad:'أغلفة وأقلام وحماية', android:'لكل الأجهزة الرئيسية', tablet:'أغلفة وحوامل', pc:'ملحقات المكتب'};
 const PRODUCTS = [
   // آيفون
-  {id:'iphone-duo', cat:'iphone', icon:'i-fold', soon:true, keywords:'ايفون دو آيفون دو الايفون القابل للطي فولد جوال قابل للطي iphone duo fold foldable', name:'iPhone Duo — أول آيفون قابل للطي', desc:'شاشة تنفتح على عالم أوسع. الحجز المسبق يبدأ 16 أكتوبر، ويتوفر 23 أكتوبر.', price:9499, stock:0, specs:{'الحالة':'قريبًا في متجرنا','الحجز المسبق':'16 أكتوبر','التوفر':'23 أكتوبر','السعر':'ابتداءً من 9,499 ر.س'}, colors:['#E9EDF3','#111318']},
+  {id:'iphone-duo', cat:'iphone', icon:'i-fold', preorder:true, keywords:'ايفون دو آيفون دو الايفون القابل للطي فولد جوال قابل للطي طلب مسبق حجز iphone duo fold foldable', name:'iPhone Duo — أول آيفون قابل للطي', desc:'متوفر للطلب المسبق. شاشة تنفتح على عالم أوسع، وتصميم من التيتانيوم ينطوي براحة يد.', price:8999, stock:0, specs:{'الحالة':'متوفر للطلب المسبق','السعر':'ابتداءً من 8,999 ر.س','بدء التسليم':'23 أكتوبر','الدفع':'عند التسليم أو حجز مسبق'}, colors:['#E9EDF3','#111318']},
   {id:'ip-clear',   cat:'iphone', icon:'i-case',   name:'جراب شفاف مضاد للاصفرار', desc:'حواف مرتفعة للكاميرا والشاشة، شفافية تدوم.', price:59, was:79, stock:20, specs:{'التوافق':'iPhone 14 – 16 Pro Max','الخامة':'TPU + بولي كربونات','المغناطيس':'مدعوم'}, colors:['#E9EDF3','#2563EB','#111318']},
   {id:'ip-silk',    cat:'iphone', icon:'i-case2',  name:'جراب سيليكون بملمس حريري', desc:'ناعم بين اليد وبطانة مخملية تحمي الجهاز من الخدوش.', price:69, stock:14, specs:{'التوافق':'iPhone 15 – 16 Pro Max','الخامة':'سيليكون سائل','المغناطيس':'مدعوم'}, colors:['#111318','#2563EB','#E9EDF3']},
   {id:'ip-rugged',  cat:'iphone', icon:'i-case3',  name:'جراب مدرّع بمسند خلفي', desc:'حماية سقوط 3 أمتار ومسند مدمج للمشاهدة.', price:89, was:109, stock:9, specs:{'التوافق':'iPhone 15 – 16 Pro Max','الحماية':'MIL-STD 810','المسند':'مدمج'}, colors:['#111318','#2563EB']},
@@ -679,16 +682,18 @@ function cardHTML(p){
   return `
     <article class="card reveal" data-id="${p.id}">
       <button class="art" data-open="${p.id}" aria-label="تفاصيل ${p.name}">
-        ${p.soon ? `<span class="sale soon">قريبًا في متجرنا</span>` : p.was ? `<span class="sale">${Math.round((1-p.price/p.was)*100)}%</span>` : ''}
+        ${p.preorder ? `<span class="sale pre">متوفر للطلب المسبق</span>` : p.soon ? `<span class="sale soon">قريبًا في متجرنا</span>` : p.was ? `<span class="sale">${Math.round((1-p.price/p.was)*100)}%</span>` : ''}
         ${artHTML(p)}
-        ${!p.soon && p.stock===0 ? '<span class="stock">نفد</span>' : ''}
+        ${!p.soon && !p.preorder && p.stock===0 ? '<span class="stock">نفد</span>' : ''}
       </button>
       <div class="info">
         <span class="chip-cat">${CAT[p.cat]}</span>
         <div class="name">${p.name}</div>
-        <div class="price">${p.soon?`<small class="from">ابتداءً من</small>`:''}${p.was?`<s>${p.was} ر.س</s>`:''}<b class="${p.was?'red':''}">${p.price.toLocaleString('en')} <small>ر.س</small></b></div>
+        <div class="price">${(p.soon||p.preorder)?`<small class="from">ابتداءً من</small>`:''}${p.was?`<s>${p.was} ر.س</s>`:''}<b class="${p.was?'red':''}">${p.price.toLocaleString('en')} <small>ر.س</small></b></div>
       </div>
-      ${p.soon
+      ${p.preorder
+        ? `<button class="add-btn pre" data-notify="${p.id}">${svg('i-bell')} اطلب مسبقًا</button>`
+        : p.soon
         ? `<button class="add-btn notify" data-notify="${p.id}">${svg('i-bell')} نبّهني عند التوفر</button>`
         : `<button class="add-btn" data-add="${p.id}" ${p.stock===0?'disabled':''}>${svg('i-plus')} أضف للسلة</button>`}
     </article>`;
@@ -706,7 +711,7 @@ function renderGrid(){
       <div class="row-head"><div><h2>${CAT[c]}</h2><span class="muted">${CAT_TAG[c]} · ${list.length} منتج</span></div><button class="more" data-cat="all">عرض كل الأقسام</button></div>
       <div class="grid">${list.map(cardHTML).join('')}</div></section>`;
   }else{
-    const feat = [...PRODUCTS.filter(p=>p.soon), ...PRODUCTS.filter(p=>p.was)];
+    const feat = [...PRODUCTS.filter(p=>p.soon||p.preorder), ...PRODUCTS.filter(p=>p.was)];
     root.innerHTML = `<section class="row-sec" id="featured"><div class="row-head"><div><h2>منتجات مميزة</h2><span class="muted">عروض هذا الأسبوع</span></div><a class="more" href="#cat-iphone">عرض الكل</a></div><div class="rail">${feat.map(cardHTML).join('')}</div></section>` +
     Object.keys(CAT).map(c => { const list = PRODUCTS.filter(p=>p.cat===c); return `
       <section class="row-sec" id="cat-${c}">
@@ -729,7 +734,7 @@ try{ cart = JSON.parse(localStorage.getItem('ram-cart') || '{}'); }catch(e){}
 /* ====== السلة ====== */
 function save(){ try{ localStorage.setItem('ram-cart', JSON.stringify(cart)); }catch(e){} }
 function add(id, color){
-  const p = PRODUCTS.find(x=>x.id===id); if(!p || p.soon || p.stock===0) return;
+  const p = PRODUCTS.find(x=>x.id===id); if(!p || p.soon || p.preorder || p.stock===0) return;
   const key = color ? `${id}|${color}` : id;
   cart[key] = cart[key] || {id, color: color||p.colors[0], qty:0};
   if(cart[key].qty >= p.stock){ toast(`المتوفر من ${p.name} هو ${p.stock} فقط`); return; }
@@ -899,11 +904,13 @@ function openNotify(id){
     <button class="close" id="closeModal" aria-label="إغلاق">${svg('i-x')}</button>
     <div class="notify-box" style="grid-column:1/-1;max-width:420px;margin:14px auto;width:100%">
       <span class="big">${svg('i-bell')}</span>
-      <h2>كن أول من يعلم</h2>
-      <p>سجّل بريدك وسنراسلك فور توفر <b>${p.name.split('—')[0].trim()}</b> في المتجر.</p>
+      <h2>${p.preorder?'اطلب مسبقًا':'كن أول من يعلم'}</h2>
+      <p>${p.preorder
+        ? `سجّل بريدك لحجز <b>${p.name.split('—')[0].trim()}</b> ضمن أول دفعة، ونتواصل معك لتأكيد الطلب والدفع.`
+        : `سجّل بريدك وسنراسلك فور توفر <b>${p.name.split('—')[0].trim()}</b> في المتجر.`}</p>
       <div class="form">
         <input id="nEmail" type="email" style="direction:ltr;text-align:left" placeholder="you@email.com" autocomplete="email">
-        <button class="btn btn-blue" id="nGo">${svg('i-bell')} <span>نبّهني</span></button>
+        <button class="btn btn-blue" id="nGo">${svg('i-bell')} <span>${p.preorder?'أرسل طلبي':'نبّهني'}</span></button>
       </div>
       <p class="hint">لن نستخدم بريدك لأي شيء آخر.</p>
     </div>`;
@@ -918,7 +925,7 @@ function openNotify(id){
     try{
       const r = await fetch(`${STORE.api}/notify`, {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({email, product:id})});
       const d = await r.json(); if(!r.ok) throw new Error(d.error||'تعذّر التسجيل');
-      document.querySelector('.notify-box').innerHTML = `<span class="big" style="background:#EAF7EE;color:#16A34A">${svg('i-check')}</span><h2>تم التسجيل ✓</h2><p>سنراسلك على <b style="direction:ltr;unicode-bidi:isolate">${email}</b> فور التوفر.</p><button class="btn btn-outline" id="nClose" style="margin-top:6px">إغلاق</button>`;
+      document.querySelector('.notify-box').innerHTML = `<span class="big" style="background:#EAF7EE;color:#16A34A">${svg('i-check')}</span><h2>تم تسجيل طلبك ✓</h2><p>سنتواصل معك على <b style="direction:ltr;unicode-bidi:isolate">${email}</b> فور التوفر.</p><button class="btn btn-outline" id="nClose" style="margin-top:6px">إغلاق</button>`;
       $('#nClose').onclick = closeAll;
     }catch(e){ toast(e.message); go.disabled=false; go.querySelector('span').textContent='نبّهني'; }
   };
@@ -938,9 +945,9 @@ function openModal(id){
       <div class="specs">${Object.entries(p.specs||{}).map(([k,v])=>`<div><span>${k}</span><span>${v}</span></div>`).join('')}</div>
       ${(p.colors&&p.colors.length>1) ? `<div><div class="muted" style="margin-bottom:8px">اللون</div><div class="swatches">${p.colors.map((c,i)=>`<button class="sw" style="background:${c}" data-color="${c}" aria-pressed="${i===0}" aria-label="لون ${i+1}"></button>`).join('')}</div></div>` : ''}
       <div class="actions">
-        <span class="price" style="font-size:24px">${p.soon?'<small class="from">ابتداءً من </small>':''}${p.price.toLocaleString('en')}<span class="cur"> ر.س</span></span>
-        ${p.soon
-          ? `<button class="btn btn-ink" id="modalNotify">${svg('i-bell')} نبّهني عند التوفر</button>`
+        <span class="price" style="font-size:24px">${(p.soon||p.preorder)?'<small class="from">ابتداءً من </small>':''}${p.price.toLocaleString('en')}<span class="cur"> ر.س</span></span>
+        ${(p.soon||p.preorder)
+          ? `<button class="btn btn-ink" id="modalNotify">${svg('i-bell')} ${p.preorder?'اطلب مسبقًا':'نبّهني عند التوفر'}</button>`
           : `<button class="btn btn-blue" id="modalAdd" ${p.stock===0?'disabled':''}>${p.stock===0?'غير متوفر حاليًا':'أضف إلى السلة'}</button>`}
       </div>
     </div>`;
