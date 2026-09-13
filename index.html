@@ -173,13 +173,47 @@ h1 em{font-style:normal;color:var(--blue)}
   .hero.duo .perks p{display:none}
 }
 
+
+/* ---- بانر وصل حديثًا ---- */
+.newin{margin-top:26px}
+.nhead{display:flex;align-items:end;justify-content:space-between;gap:12px;margin-bottom:14px;padding:0 4px}
+.ntag{display:inline-block;background:var(--blue);color:#fff;font-size:11.5px;font-weight:700;padding:3px 11px;border-radius:var(--r-pill);margin-bottom:8px}
+.ngrid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.ncard{position:relative;display:grid;grid-template-columns:1.1fr 1fr;align-items:center;gap:10px;padding:16px;border-radius:var(--r-xl);overflow:hidden;text-align:start;color:#fff;min-height:230px;transition:transform .25s,box-shadow .25s;box-shadow:var(--shadow)}
+.ncard.duo{background:linear-gradient(135deg,#0B1020 0%,#16223F 55%,#25406F 100%)}
+.ncard.pro{background:linear-gradient(135deg,#180A10 0%,#2E1520 55%,#5A2233 100%)}
+.ncard::after{content:"";position:absolute;inset:0;background:radial-gradient(60% 60% at 80% 15%,rgba(255,255,255,.14),transparent 70%);pointer-events:none}
+.nimg{display:grid;place-items:center;height:100%}
+.nimg img{max-height:190px;width:auto;max-width:100%;object-fit:contain;filter:drop-shadow(0 18px 26px rgba(0,0,0,.45))}
+.ninfo{display:flex;flex-direction:column;gap:6px;position:relative;z-index:1}
+.ninfo b{font-family:var(--head);font-size:20px;font-weight:700;direction:ltr;text-align:start}
+.ninfo span{font-size:12.5px;color:rgba(255,255,255,.72);line-height:1.7}
+.ninfo em{font-style:normal;font-family:var(--head);font-weight:700;font-size:15px;color:#93B4FF;margin-top:4px}
+.ncard.pro .ninfo em{color:#F2A9BC}
+
+/* ---- معرض صور المنتج ---- */
+.gal{display:flex;flex-direction:column;gap:10px}
+.art.main{width:100%}
+.thumbs{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+.thumbs::-webkit-scrollbar{display:none}
+.th{flex:none;width:62px;height:62px;border-radius:12px;overflow:hidden;border:2px solid transparent;background:#F2F5FA;padding:0;transition:border-color .2s}
+.th img{width:100%;height:100%;object-fit:cover}
+.th.on{border-color:var(--blue)}
+
+@media(max-width:900px){
+  .ngrid{grid-template-columns:1fr}
+  .ncard{min-height:200px;grid-template-columns:1fr 1fr;padding:14px}
+  .nimg img{max-height:150px}
+  .ninfo b{font-size:17px}
+  .th{width:54px;height:54px}
+}
+
 /* ---- بانرا الفئتين ---- */
 .pair{margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.pair a{position:relative;border-radius:var(--r-xl);overflow:hidden;min-height:180px;display:flex;align-items:flex-end;padding:18px;color:#fff;isolation:isolate}
-.pair .ip{background:linear-gradient(140deg,#1E3A8A,#2563EB 60%,#7FA8FF)}
-.pair .gx{background:linear-gradient(140deg,#111318,#2A2F3A 60%,#4B5060)}
-.pair img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
-.pair .fb{position:absolute;inset-inline-start:auto;inset-inline-end:-6%;top:-10%;width:60%;height:120%;z-index:0;opacity:.85}
+.pair a{position:relative;border-radius:var(--r-xl);overflow:hidden;min-height:180px;display:flex;align-items:flex-end;padding:18px;color:#fff;isolation:isolate;transition:transform .25s}
+.pair .ip{background:linear-gradient(135deg,#0F1F4D 0%,#1E3A8A 45%,#2563EB 100%)}
+.pair .gx{background:linear-gradient(135deg,#0A0C10 0%,#1B1F27 45%,#3A4150 100%)}
+.pair img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;opacity:.9}
 .pair .txt{position:relative;z-index:1;background:rgba(17,19,24,.35);border:1px solid rgba(255,255,255,.2);border-radius:16px;padding:12px 16px}
 .pair .txt b{font-family:var(--head);font-size:19px;display:block}
 .pair .txt span{font-size:12.5px;opacity:.85}
@@ -369,6 +403,8 @@ button.more{cursor:pointer}
 
 /* ---- تأثيرات المؤشر: للأجهزة ذات الفأرة فقط (سلاسة اللمس) ---- */
 @media(hover:hover) and (pointer:fine){
+  .pair a:hover{transform:translateY(-3px)}
+  .ncard:hover{transform:translateY(-4px)}
   .card:hover{transform:translateY(-4px);box-shadow:inset 0 1px 0 rgba(255,255,255,.95), var(--shadow)}
   .card:hover .art svg{transform:scale(1.05)}
   .card .art svg{transition:transform .35s}
@@ -553,8 +589,8 @@ button.more{cursor:pointer}
   </section>
 
   <div class="pair">
-    <a class="ip" href="#cat-iphone"><img src="images/banner-iphone.jpg" alt="" onerror="this.remove()"><svg class="fb" viewBox="0 0 120 120"><use href="#i-case"/></svg><div class="txt"><b>إكسسوارات آيفون</b><span>كفرات · شواحن · حماية شاشة</span></div></a>
-    <a class="gx" href="#cat-android"><img src="images/banner-galaxy.jpg" alt="" onerror="this.remove()"><svg class="fb" viewBox="0 0 120 120"><use href="#i-case3"/></svg><div class="txt"><b>إكسسوارات جالكسي</b><span>Galaxy S · A · Tab</span></div></a>
+    <a class="ip" href="#cat-iphone"><img src="images/banner-iphone.jpg" alt="" onerror="this.remove()"><div class="txt"><b>إكسسوارات آيفون</b><span>كفرات · شواحن · حماية شاشة</span></div></a>
+    <a class="gx" href="#cat-android"><img src="images/banner-galaxy.jpg" alt="" onerror="this.remove()"><div class="txt"><b>إكسسوارات جالكسي</b><span>Galaxy S · A · Tab</span></div></a>
   </div>
 
   <section class="features">
@@ -571,6 +607,32 @@ button.more{cursor:pointer}
     <button class="dev" data-cat="tablet"><span class="ic"><svg><use href="#i-kbcase"/></svg></span>تابلت</button>
     <button class="dev" data-cat="pc"><span class="ic"><svg><use href="#i-keyboard"/></svg></span>كمبيوتر</button>
   </div>
+
+
+  <section class="newin reveal">
+    <div class="nhead">
+      <div><span class="ntag">جديد</span><h2>وصل حديثًا للطلب المسبق</h2></div>
+      <span class="muted">احجز نسختك ضمن أول دفعة</span>
+    </div>
+    <div class="ngrid">
+      <button class="ncard duo" data-open="iphone-duo">
+        <div class="nimg"><img src="images/duo-2.jpg" alt="iPhone Duo" loading="lazy" onerror="this.remove()"></div>
+        <div class="ninfo">
+          <b>iPhone Duo</b>
+          <span>أول آيفون قابل للطي · شاشة تنفتح على عالم أوسع</span>
+          <em>ابتداءً من 8,999 ر.س</em>
+        </div>
+      </button>
+      <button class="ncard pro" data-open="iphone-18-pro">
+        <div class="nimg"><img src="images/i18-burgundy-1.jpg" alt="iPhone 18 Pro Max" loading="lazy" onerror="this.remove()"></div>
+        <div class="ninfo">
+          <b>iPhone 18 Pro Max</b>
+          <span>بروبقندي وأسود · تيتانيوم وكاميرا احترافية</span>
+          <em>ابتداءً من 6,499 ر.س</em>
+        </div>
+      </button>
+    </div>
+  </section>
 
   <div id="rows"></div>
 
@@ -645,7 +707,8 @@ const CAT = {iphone:'آيفون', ipad:'آيباد', android:'أندرويد', t
 const CAT_TAG = {iphone:'جرابات وإكسسوارات', ipad:'أغلفة وأقلام وحماية', android:'لكل الأجهزة الرئيسية', tablet:'أغلفة وحوامل', pc:'ملحقات المكتب'};
 const PRODUCTS = [
   // آيفون
-  {id:'iphone-duo', cat:'iphone', icon:'i-fold', preorder:true, keywords:'ايفون دو آيفون دو الايفون القابل للطي فولد جوال قابل للطي طلب مسبق حجز iphone duo fold foldable', name:'iPhone Duo — أول آيفون قابل للطي', desc:'متوفر للطلب المسبق. شاشة تنفتح على عالم أوسع، وتصميم من التيتانيوم ينطوي براحة يد.', price:8999, stock:0, specs:{'الحالة':'متوفر للطلب المسبق','السعر':'ابتداءً من 8,999 ر.س','بدء التسليم':'23 أكتوبر','الدفع':'عند التسليم أو حجز مسبق'}, colors:['#E9EDF3','#111318']},
+  {id:'iphone-duo', cat:'iphone', icon:'i-fold', preorder:true, gallery:['duo-1','duo-2','duo-3','duo-4','duo-5'], keywords:'ايفون دو آيفون دو الايفون القابل للطي فولد جوال قابل للطي طلب مسبق حجز iphone duo fold foldable', name:'iPhone Duo — أول آيفون قابل للطي', desc:'متوفر للطلب المسبق. شاشة تنفتح على عالم أوسع، وتصميم من التيتانيوم ينطوي براحة يد.', price:8999, stock:0, specs:{'الحالة':'متوفر للطلب المسبق','السعر':'ابتداءً من 8,999 ر.س','بدء التسليم':'23 أكتوبر','الدفع':'عند التسليم أو حجز مسبق'}, colors:['#E9EDF3','#111318']},
+{id:'iphone-18-pro', cat:'iphone', icon:'i-case3', preorder:true, keywords:'ايفون 18 برو ماكس بروبقندي عنابي اسود iphone 18 pro max burgundy black', name:'iPhone 18 Pro Max', desc:'متوفر للطلب المسبق — تصميم تيتانيوم وكاميرا احترافية ثلاثية.', price:6499, stock:0, specs:{'الحالة':'متوفر للطلب المسبق','الشاشة':'6.9 بوصة Super Retina XDR','الكاميرا':'ثلاثية احترافية','الذاكرة':'256GB / 512GB / 1TB'}, colors:['#6B2233','#1A1A1C'], colorNames:{'#6B2233':'بروبقندي','#1A1A1C':'أسود'}, colorGallery:{'#6B2233':['i18-burgundy-1','i18-burgundy-2','i18-burgundy-3'],'#1A1A1C':['i18-black-1','i18-black-2','i18-black-3']}, gallery:['i18-burgundy-1','i18-burgundy-2','i18-burgundy-3','i18-black-1','i18-black-2','i18-black-3']},
   {id:'ip-clear',   cat:'iphone', icon:'i-case',   name:'جراب شفاف مضاد للاصفرار', desc:'حواف مرتفعة للكاميرا والشاشة، شفافية تدوم.', price:59, was:79, stock:20, specs:{'التوافق':'iPhone 14 – 16 Pro Max','الخامة':'TPU + بولي كربونات','المغناطيس':'مدعوم'}, colors:['#E9EDF3','#2563EB','#111318']},
   {id:'ip-silk',    cat:'iphone', icon:'i-case2',  name:'جراب سيليكون بملمس حريري', desc:'ناعم بين اليد وبطانة مخملية تحمي الجهاز من الخدوش.', price:69, stock:14, specs:{'التوافق':'iPhone 15 – 16 Pro Max','الخامة':'سيليكون سائل','المغناطيس':'مدعوم'}, colors:['#111318','#2563EB','#E9EDF3']},
   {id:'ip-rugged',  cat:'iphone', icon:'i-case3',  name:'جراب مدرّع بمسند خلفي', desc:'حماية سقوط 3 أمتار ومسند مدمج للمشاهدة.', price:89, was:109, stock:9, specs:{'التوافق':'iPhone 15 – 16 Pro Max','الحماية':'MIL-STD 810','المسند':'مدمج'}, colors:['#111318','#2563EB']},
@@ -937,13 +1000,16 @@ function openModal(id){
   activeColor = p.colors ? p.colors[0] : null;
   $('#panel').innerHTML = `
     <button class="close" id="closeModal" aria-label="إغلاق">${svg('i-x')}</button>
-    <div class="art">${artHTML(p)}</div>
+    <div class="gal">
+      <div class="art main">${artHTML(p)}</div>
+      ${p.gallery?.length ? `<div class="thumbs">${p.gallery.map((g,i)=>`<button class="th ${i===0?'on':''}" data-img="${g}" aria-label="صورة ${i+1}"><img src="${STORE.images}/${g}.jpg" alt="" loading="lazy"></button>`).join('')}</div>` : ''}
+    </div>
     <div class="body">
       <span class="muted">${CAT[p.cat]}</span>
       <h2>${p.name}</h2>
       <p class="desc">${p.desc}</p>
       <div class="specs">${Object.entries(p.specs||{}).map(([k,v])=>`<div><span>${k}</span><span>${v}</span></div>`).join('')}</div>
-      ${(p.colors&&p.colors.length>1) ? `<div><div class="muted" style="margin-bottom:8px">اللون</div><div class="swatches">${p.colors.map((c,i)=>`<button class="sw" style="background:${c}" data-color="${c}" aria-pressed="${i===0}" aria-label="لون ${i+1}"></button>`).join('')}</div></div>` : ''}
+      ${(p.colors&&p.colors.length>1) ? `<div><div class="muted" style="margin-bottom:8px">اللون${p.colorNames?` — <span id="clrName">${p.colorNames[p.colors[0]]||''}</span>`:''}</div><div class="swatches">${p.colors.map((c,i)=>`<button class="sw" style="background:${c}" data-color="${c}" aria-pressed="${i===0}" aria-label="لون ${i+1}"></button>`).join('')}</div></div>` : ''}
       <div class="actions">
         <span class="price" style="font-size:24px">${(p.soon||p.preorder)?'<small class="from">ابتداءً من </small>':''}${p.price.toLocaleString('en')}<span class="cur"> ر.س</span></span>
         ${(p.soon||p.preorder)
@@ -955,7 +1021,23 @@ function openModal(id){
   $('#closeModal').onclick = closeAll;
   const ma = $('#modalAdd'); if(ma) ma.onclick = () => { add(id, activeColor); closeAll(); openCart(); };
   const mn = $('#modalNotify'); if(mn) mn.onclick = () => openNotify(id);
-  document.querySelectorAll('[data-color]').forEach(b => b.onclick = () => { activeColor=b.dataset.color; document.querySelectorAll('[data-color]').forEach(x=>x.setAttribute('aria-pressed', x===b)); });
+  const setMain = (name) => { const a=$('#panel').querySelector('.art.main'); if(a) a.innerHTML = `<img class="ph" src="${STORE.images}/${name}.jpg" alt="" onerror="this.remove()">`; };
+  const bindThumbs = () => document.querySelectorAll('[data-img]').forEach(t => t.onclick = () => {
+    setMain(t.dataset.img);
+    document.querySelectorAll('[data-img]').forEach(x=>x.classList.toggle('on', x===t));
+  });
+  bindThumbs();
+  document.querySelectorAll('[data-color]').forEach(b => b.onclick = () => {
+    activeColor=b.dataset.color;
+    document.querySelectorAll('[data-color]').forEach(x=>x.setAttribute('aria-pressed', x===b));
+    const cn=$('#panel').querySelector('#clrName'); if(cn && p.colorNames) cn.textContent = p.colorNames[activeColor]||'';
+    const set = p.colorGallery?.[activeColor];
+    if(set?.length){
+      const wrap=$('#panel').querySelector('.thumbs');
+      if(wrap){ wrap.innerHTML = set.map((g,i)=>`<button class="th ${i===0?'on':''}" data-img="${g}" aria-label="صورة ${i+1}"><img src="${STORE.images}/${g}.jpg" alt="" loading="lazy"></button>`).join(''); bindThumbs(); }
+      setMain(set[0]);
+    }
+  });
 }
 
 function openCart(){ $('#drawer').classList.add('on'); $('#drawer').setAttribute('aria-hidden','false'); $('#scrim').classList.add('on'); }
