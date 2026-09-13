@@ -39,8 +39,12 @@ button,a,input{-webkit-tap-highlight-color:transparent}
 button,a{touch-action:manipulation}
 a{color:inherit;text-decoration:none}
 :focus-visible{outline:2px solid var(--blue);outline-offset:3px;border-radius:8px}
-svg{display:block}
+svg{display:block;flex:none}
 img{max-width:100%}
+.btn svg,.close svg,.icon-btn svg,.add-btn svg,.pay-seg svg,.copy svg,.tabs svg,.features svg,.perks svg,.band svg,.promo svg{width:18px;height:18px;flex:none}
+.icon-btn svg,.tabs svg{width:22px;height:22px}
+.status .ic svg,.notify-box .big svg{width:26px;height:26px}
+.wa-fab svg{width:28px;height:28px}
 
 /* ---- الخلفية: هالات لونية + النقش الهندسي (بلا فلاتر ثقيلة) ---- */
 body::before{content:"";position:fixed;inset:0;z-index:-2;background:
@@ -219,7 +223,7 @@ h1 em{font-style:normal;color:var(--blue)}
 .pair .txt span{font-size:12.5px;opacity:.85}
 
 /* ---- الأجهزة ---- */
-.devices{margin-top:20px;display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+.devices{margin-top:20px;display:grid;grid-template-columns:repeat(2,1fr);gap:10px;max-width:520px;margin-inline:auto}
 .dev{min-height:76px;background:var(--glass);border:1px solid var(--gline);box-shadow:inset 0 1px 0 #fff,var(--shadow-sm);
   border-radius:var(--r-lg);padding:14px 6px;display:flex;flex-direction:column;align-items:center;gap:8px;font-size:13px;font-weight:600;transition:transform .2s}
 .dev:active{transform:scale(.96)}
@@ -350,25 +354,27 @@ footer .flinks a:hover{color:var(--blue)}
 
 /* ---- النافذة ---- */
 .modal{position:fixed;inset:0;z-index:70;display:grid;place-items:center;padding:12px;pointer-events:none}
-.modal .panel{width:min(780px,100%);border-radius:var(--r-xl);padding:18px;display:grid;grid-template-columns:1fr 1fr;gap:20px;position:relative;
+.modal .panel{width:min(820px,100%);border-radius:var(--r-xl);padding:20px 20px 22px;display:grid;grid-template-columns:1fr 1fr;gap:22px;position:relative;align-items:start;
   background:rgba(255,255,255,.94);border:1px solid var(--gline);box-shadow:var(--shadow);
   opacity:0;transform:translateY(14px) scale(.98);transition:opacity .28s,transform .32s cubic-bezier(.2,.8,.2,1)}
 .modal.on{pointer-events:auto}
 .modal.on .panel{opacity:1;transform:none}
-.modal .art{aspect-ratio:1;border-radius:var(--r-lg);display:grid;place-items:center;background:linear-gradient(160deg,#fff,#EEF2F9);position:relative;overflow:hidden}
+.modal .art{aspect-ratio:1;border-radius:var(--r-lg);display:grid;place-items:center;background:linear-gradient(160deg,#fff,#EEF2F9);position:relative;overflow:hidden;border:1px solid var(--line)}
 .modal .art svg{width:52%}
 .modal .body{display:flex;flex-direction:column;gap:12px}
 .modal h2{font-size:21px}
 .modal .desc{color:var(--ink-2);font-size:14px}
 .specs{display:flex;flex-direction:column;font-size:13px}
-.specs div{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px solid var(--line)}
+.specs div{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid var(--line)}
+.specs div:last-child{border-bottom:0}
 .specs span:last-child{color:var(--ink-2);text-align:left}
 .swatches{display:flex;gap:8px}
 .sw{width:30px;height:30px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 1px var(--line);cursor:pointer;transition:transform .2s}
 .sw[aria-pressed="true"]{transform:scale(1.15);box-shadow:0 0 0 2px var(--blue)}
-.modal .actions{margin-top:auto;display:flex;gap:10px;align-items:center;justify-content:space-between}
-.modal .actions .price{font-size:22px}
-.modal .close{position:absolute;top:12px;inset-inline-start:12px;z-index:2}
+.modal .actions{margin-top:8px;display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;padding-top:14px;border-top:1px solid var(--line)}
+.modal .actions .price{font-size:21px}
+.modal .actions .btn{flex:1;min-width:180px}
+.modal .close{position:absolute;top:12px;inset-inline-start:12px;z-index:3;width:36px;height:36px;background:rgba(255,255,255,.9);box-shadow:var(--shadow-sm)}
 .notify-box{display:flex;flex-direction:column;gap:10px;text-align:center;padding:6px}
 .notify-box .big{width:60px;height:60px;border-radius:50%;background:var(--blue-soft);color:var(--blue);display:grid;place-items:center;margin:0 auto}
 .notify-box h2{font-size:20px}
@@ -515,7 +521,7 @@ button.more{cursor:pointer}
       <img class="mark" src="images/logo-mark.png" alt="">
       <span class="txt"><span class="en">Ra<b>M</b> Store</span><span class="sub">إكسسوارات وأجهزة</span></span>
     </a>
-    <div class="links"><a href="#top" class="on">الرئيسية</a><a href="#featured">العروض</a><a href="#cat-iphone">آيفون</a><a href="#cat-ipad">آيباد</a><a href="#cat-android">أندرويد</a><a href="#cat-tablet">تابلت</a><a href="#cat-pc">كمبيوتر</a></div>
+    <div class="links"><a href="#top" class="on">الرئيسية</a><a href="#featured">الجديد</a><a href="#cat-iphone">أجهزة</a><a href="#cat-accessories">إكسسوارات</a></div>
     <label class="search"><svg width="18" height="18"><use href="#i-search"/></svg><input id="q" type="search" placeholder="ابحث عن كفر، غلاف، شاحن…" autocomplete="off"></label>
     <div class="nav-actions">
       <a class="icon-btn waLink" href="#" target="_blank" aria-label="واتساب"><svg width="22" height="22"><use href="#i-chat"/></svg></a>
@@ -537,7 +543,7 @@ button.more{cursor:pointer}
         <p class="lead">شاشة تنفتح على عالم أوسع، بتصميم من التيتانيوم ينطوي براحة يد واحدة. احجز نسختك ضمن أول دفعة تصلنا، والتسليم يبدأ 23 أكتوبر.</p>
         <div class="cta-row">
           <button class="btn btn-blue" data-notify="iphone-duo"><svg width="18" height="18"><use href="#i-bell"/></svg> اطلب مسبقًا</button>
-          <a class="btn btn-ghost" href="#cat-iphone">إكسسوارات الآيفون</a>
+          <a class="btn btn-ghost" href="#cat-accessories">تصفّح الإكسسوارات</a>
         </div>
         <p class="from-price">ابتداءً من <b>8,999</b> ر.س</p>
       </div>
@@ -588,9 +594,7 @@ button.more{cursor:pointer}
     </div>
   </section>
 
-  <div class="pair">
-    <a class="ip" href="#cat-iphone"><img src="images/banner-iphone.jpg" alt="" onerror="this.remove()"><div class="txt"><b>إكسسوارات آيفون</b><span>كفرات · شواحن · حماية شاشة</span></div></a>
-    <a class="gx" href="#cat-android"><img src="images/banner-galaxy.jpg" alt="" onerror="this.remove()"><div class="txt"><b>إكسسوارات جالكسي</b><span>Galaxy S · A · Tab</span></div></a>
+</a>
   </div>
 
   <section class="features">
@@ -600,12 +604,9 @@ button.more{cursor:pointer}
     <div><span class="ic"><svg width="20" height="20"><use href="#i-truck"/></svg></span><div><h3>شحن سريع</h3><p>لكافة مناطق المملكة</p></div></div>
   </section>
 
-  <div class="devices" role="navigation" aria-label="الأجهزة">
-    <button class="dev" data-cat="iphone"><span class="ic"><svg><use href="#i-case"/></svg></span>آيفون</button>
-    <button class="dev" data-cat="ipad"><span class="ic"><svg><use href="#i-ipad"/></svg></span>آيباد</button>
-    <button class="dev" data-cat="android"><span class="ic"><svg><use href="#i-case3"/></svg></span>أندرويد</button>
-    <button class="dev" data-cat="tablet"><span class="ic"><svg><use href="#i-kbcase"/></svg></span>تابلت</button>
-    <button class="dev" data-cat="pc"><span class="ic"><svg><use href="#i-keyboard"/></svg></span>كمبيوتر</button>
+  <div class="devices" role="navigation" aria-label="الأقسام">
+    <button class="dev" data-cat="iphone"><span class="ic"><svg><use href="#i-fold"/></svg></span>أجهزة جديدة</button>
+    <button class="dev" data-cat="accessories"><span class="ic"><svg><use href="#i-case"/></svg></span>إكسسوارات</button>
   </div>
 
 
@@ -619,7 +620,7 @@ button.more{cursor:pointer}
         <div class="nimg"><img src="images/duo-2.jpg" alt="iPhone Duo" loading="lazy" onerror="this.remove()"></div>
         <div class="ninfo">
           <b>iPhone Duo</b>
-          <span>أول آيفون قابل للطي · شاشة تنفتح على عالم أوسع</span>
+          <span>أول آيفون قابل للطي</span>
           <em>ابتداءً من 8,999 ر.س</em>
         </div>
       </button>
@@ -627,7 +628,7 @@ button.more{cursor:pointer}
         <div class="nimg"><img src="images/i18-burgundy-1.jpg" alt="iPhone 18 Pro Max" loading="lazy" onerror="this.remove()"></div>
         <div class="ninfo">
           <b>iPhone 18 Pro Max</b>
-          <span>بروبقندي وأسود · تيتانيوم وكاميرا احترافية</span>
+          <span>بروبقندي وأسود</span>
           <em>ابتداءً من 6,499 ر.س</em>
         </div>
       </button>
@@ -648,7 +649,7 @@ button.more{cursor:pointer}
 
 <footer>
   <img class="flogo" src="images/logo-full.png" alt="RaM Store — إكسسوارات وأجهزة">
-  <div class="flinks"><a href="#cat-iphone">آيفون</a><a href="#cat-ipad">آيباد</a><a href="#cat-android">أندرويد</a><a href="#cat-tablet">تابلت</a><a href="#cat-pc">كمبيوتر</a><a href="track.html">تتبع الطلب</a><a class="waLink" href="#" target="_blank">تواصل معنا 0595599177</a></div>
+  <div class="flinks"><a href="#cat-iphone">أجهزة</a><a href="#cat-accessories">إكسسوارات</a><a href="track.html">تتبع الطلب</a><a class="waLink" href="#" target="_blank">تواصل معنا 0595599177</a></div>
   <p>© 2026 RaM Store · الأسعار شاملة الضريبة</p>
 </footer>
 
@@ -703,40 +704,17 @@ const STORE = {
 };
 
 /* ====== المنتجات ====== */
-const CAT = {iphone:'آيفون', ipad:'آيباد', android:'أندرويد', tablet:'تابلت', pc:'كمبيوتر'};
-const CAT_TAG = {iphone:'جرابات وإكسسوارات', ipad:'أغلفة وأقلام وحماية', android:'لكل الأجهزة الرئيسية', tablet:'أغلفة وحوامل', pc:'ملحقات المكتب'};
+const CAT = {iphone:'أجهزة', accessories:'إكسسوارات'};
+const CAT_TAG = {iphone:'متوفرة للطلب المسبق', accessories:'كفرات وشواحن وسماعات'};
 const PRODUCTS = [
-  // آيفون
   {id:'iphone-duo', cat:'iphone', icon:'i-fold', preorder:true, gallery:['duo-1','duo-2','duo-3','duo-4','duo-5'], keywords:'ايفون دو آيفون دو الايفون القابل للطي فولد جوال قابل للطي طلب مسبق حجز iphone duo fold foldable', name:'iPhone Duo — أول آيفون قابل للطي', desc:'متوفر للطلب المسبق. شاشة تنفتح على عالم أوسع، وتصميم من التيتانيوم ينطوي براحة يد.', price:8999, stock:0, specs:{'الحالة':'متوفر للطلب المسبق','السعر':'ابتداءً من 8,999 ر.س','بدء التسليم':'23 أكتوبر','الدفع':'عند التسليم أو حجز مسبق'}, colors:['#E9EDF3','#111318']},
-{id:'iphone-18-pro', cat:'iphone', icon:'i-case3', preorder:true, keywords:'ايفون 18 برو ماكس بروبقندي عنابي اسود iphone 18 pro max burgundy black', name:'iPhone 18 Pro Max', desc:'متوفر للطلب المسبق — تصميم تيتانيوم وكاميرا احترافية ثلاثية.', price:6499, stock:0, specs:{'الحالة':'متوفر للطلب المسبق','الشاشة':'6.9 بوصة Super Retina XDR','الكاميرا':'ثلاثية احترافية','الذاكرة':'256GB / 512GB / 1TB'}, colors:['#6B2233','#1A1A1C'], colorNames:{'#6B2233':'بروبقندي','#1A1A1C':'أسود'}, colorGallery:{'#6B2233':['i18-burgundy-1','i18-burgundy-2','i18-burgundy-3'],'#1A1A1C':['i18-black-1','i18-black-2','i18-black-3']}, gallery:['i18-burgundy-1','i18-burgundy-2','i18-burgundy-3','i18-black-1','i18-black-2','i18-black-3']},
-  {id:'ip-clear',   cat:'iphone', icon:'i-case',   name:'جراب شفاف مضاد للاصفرار', desc:'حواف مرتفعة للكاميرا والشاشة، شفافية تدوم.', price:59, was:79, stock:20, specs:{'التوافق':'iPhone 14 – 16 Pro Max','الخامة':'TPU + بولي كربونات','المغناطيس':'مدعوم'}, colors:['#E9EDF3','#2563EB','#111318']},
-  {id:'ip-silk',    cat:'iphone', icon:'i-case2',  name:'جراب سيليكون بملمس حريري', desc:'ناعم بين اليد وبطانة مخملية تحمي الجهاز من الخدوش.', price:69, stock:14, specs:{'التوافق':'iPhone 15 – 16 Pro Max','الخامة':'سيليكون سائل','المغناطيس':'مدعوم'}, colors:['#111318','#2563EB','#E9EDF3']},
-  {id:'ip-rugged',  cat:'iphone', icon:'i-case3',  name:'جراب مدرّع بمسند خلفي', desc:'حماية سقوط 3 أمتار ومسند مدمج للمشاهدة.', price:89, was:109, stock:9, specs:{'التوافق':'iPhone 15 – 16 Pro Max','الحماية':'MIL-STD 810','المسند':'مدمج'}, colors:['#111318','#2563EB']},
-  {id:'mag15',      cat:'iphone', icon:'i-charger',name:'شاحن مغناطيسي لاسلكي 15W', desc:'يثبت على ظهر الجهاز ويشحن بأقصى سرعة لاسلكية.', price:89, stock:12, specs:{'القدرة':'15W','الطول':'1.5 م','المنفذ':'USB-C'}, colors:['#E9EDF3','#111318']},
-  {id:'ip-glass',   cat:'iphone', icon:'i-glass',  name:'حماية شاشة زجاجية بإطار تركيب', desc:'إطار يضمن التركيب بلا فقاعات من أول محاولة.', price:35, stock:50, specs:{'الصلابة':'9H','السماكة':'0.33 مم','العبوة':'قطعتان'}, colors:['#2563EB']},
-  {id:'strap',      cat:'iphone', icon:'i-strap',  name:'سوار ساعة رياضي سيليكون', desc:'ناعم على الجلد ولا يمتص العرق، بمقاسين في العلبة.', price:45, stock:30, specs:{'المقاس':'42/44/45/49 مم','الخامة':'فلوروإيلاستومر'}, colors:['#2563EB','#111318','#E9EDF3']},
-  // آيباد
-  {id:'ipad-kb',    cat:'ipad',   icon:'i-kbcase', name:'غلاف آيباد بلوحة مفاتيح', desc:'يحوّل الآيباد إلى لابتوب صغير، بلوحة عربية/إنجليزية مضيئة.', price:249, was:299, stock:7, specs:{'التوافق':'iPad 10 / Air / Pro 11','الاتصال':'Bluetooth','الإضاءة':'7 ألوان'}, colors:['#111318','#2563EB']},
-  {id:'ipad-folio', cat:'ipad',   icon:'i-ipad',   name:'غلاف آيباد ذكي بحامل ثلاثي', desc:'يوقظ الجهاز عند الفتح وينام عند الإغلاق، بثلاث زوايا وقوف.', price:79, stock:16, specs:{'التوافق':'iPad 10 / Air / Pro','الخامة':'جلد صناعي','القلم':'حامل مدمج'}, colors:['#111318','#2563EB','#E9EDF3']},
-  {id:'ipad-pen',   cat:'ipad',   icon:'i-pen',    name:'قلم رقمي مع رفض راحة اليد', desc:'يلتصق مغناطيسيًا ويشحن لاسلكيًا، وميلان للتظليل.', price:119, stock:11, specs:{'التوافق':'iPad 2018 وأحدث','الشحن':'مغناطيسي / USB-C','البطارية':'10 ساعات'}, colors:['#E9EDF3']},
-  {id:'ipad-glass', cat:'ipad',   icon:'i-glass',  name:'حماية شاشة آيباد ورقية الملمس', desc:'ملمس ورقي للكتابة والرسم بالقلم دون انزلاق.', price:49, stock:25, specs:{'التوافق':'iPad 10 / Air / Pro','الملمس':'Paper-feel','السماكة':'0.15 مم'}, colors:['#E9EDF3']},
-  // أندرويد
-  {id:'an-clear',   cat:'android',icon:'i-case',   name:'جراب شفاف لسامسونج Galaxy S', desc:'شفاف ونحيف مع حماية زوايا معززة.', price:49, stock:22, specs:{'التوافق':'Galaxy S23 / S24 / S25','الخامة':'TPU + PC'}, colors:['#E9EDF3','#2563EB']},
-  {id:'an-rugged',  cat:'android',icon:'i-case3',  name:'جراب مدرّع بحلقة إصبع', desc:'حماية عسكرية وحلقة تدور 360° تعمل مسندًا.', price:79, was:99, stock:12, specs:{'التوافق':'Galaxy S / A، Pixel','الحماية':'سقوط 3 م','الحلقة':'دوّارة'}, colors:['#111318','#2563EB']},
-  {id:'cable-c',    cat:'android',icon:'i-cable',  name:'كيبل USB-C إلى USB-C مجدول', desc:'شحن حتى 100W ونقل بيانات، بغلاف نايلون يتحمل الثني.', price:39, stock:40, specs:{'القدرة':'100W','الطول':'2 م'}, colors:['#111318','#2563EB']},
-  {id:'gan65',      cat:'android',icon:'i-gan',    name:'شاحن GaN 65W بثلاثة منافذ', desc:'يشحن اللابتوب والجوال والسماعة معًا من مقبس واحد.', price:139, stock:8, specs:{'القدرة':'65W','المنافذ':'USB-C ×2، USB-A ×1','القابس':'سعودي (G)'}, colors:['#E9EDF3']},
-  {id:'power20',    cat:'android',icon:'i-power',  name:'بطارية متنقلة 20000mAh', desc:'تشحن جهازين معًا مع شاشة تعرض النسبة المتبقية.', price:129, stock:20, specs:{'السعة':'20000mAh','الإخراج':'22.5W'}, colors:['#111318','#E9EDF3']},
-  // تابلت
-  {id:'tab-folio',  cat:'tablet', icon:'i-ipad',   name:'غلاف تابلت سامسونج بحامل', desc:'غلاف ذكي يوقظ الجهاز، بحامل للمشاهدة والكتابة.', price:69, stock:14, specs:{'التوافق':'Galaxy Tab S9 / S10 / A9','الخامة':'جلد صناعي'}, colors:['#111318','#2563EB']},
-  {id:'tab-kb',     cat:'tablet', icon:'i-kbcase', name:'غلاف تابلت بلوحة مفاتيح ولمس', desc:'لوحة مفاتيح ولوحة لمس تعمل مع أي تابلت أندرويد.', price:199, was:239, stock:6, specs:{'التوافق':'10 – 11 بوصة','الاتصال':'Bluetooth 5'}, colors:['#111318']},
-  {id:'tab-glass',  cat:'tablet', icon:'i-glass',  name:'حماية شاشة تابلت زجاجية', desc:'زجاج مقسّى 9H بإطار تركيب سهل.', price:39, stock:30, specs:{'التوافق':'Galaxy Tab S9 / A9','الصلابة':'9H'}, colors:['#E9EDF3']},
-  {id:'stand',      cat:'tablet', icon:'i-stand',  name:'حامل ألمنيوم قابل للطي', desc:'يرفع التابلت أو اللابتوب لمستوى النظر ويطوى في الحقيبة.', price:149, stock:10, specs:{'الخامة':'ألمنيوم','المقاس':'حتى 16 بوصة'}, colors:['#C9CFDA','#111318']},
-  // كمبيوتر
-  {id:'kb',         cat:'pc',     icon:'i-keyboard',name:'لوحة مفاتيح ميكانيكية 75%', desc:'مفاتيح هادئة، إضاءة بيضاء، تعمل بالبلوتوث أو الكيبل.', price:349, stock:6, specs:{'التخطيط':'75% عربي/إنجليزي','الاتصال':'Bluetooth 5 / USB-C'}, colors:['#E9EDF3','#111318']},
-  {id:'mouse',      cat:'pc',     icon:'i-mouse',  name:'فأرة لاسلكية صامتة', desc:'ثلاثة أجهزة بضغطة زر، وبطارية تدوم شهرين.', price:119, stock:18, specs:{'الدقة':'4000 DPI','الاتصال':'Bluetooth / 2.4G'}, colors:['#E9EDF3','#111318','#2563EB']},
-  {id:'hub',        cat:'pc',     icon:'i-hub',    name:'موزع USB-C ‏7 في 1', desc:'HDMI 4K، قارئ بطاقات، ثلاثة منافذ USB وشحن عابر 100W.', price:159, stock:14, specs:{'العرض':'HDMI 4K@60','المنافذ':'7'}, colors:['#C9CFDA']},
-  {id:'buds',       cat:'pc',     icon:'i-buds',   name:'سماعات لاسلكية بعزل الضجيج', desc:'عزل نشط، 30 ساعة مع العلبة، توصيل بجهازين.', price:199, was:249, stock:15, specs:{'البطارية':'30 ساعة','العزل':'ANC'}, colors:['#E9EDF3','#111318']},
+  {id:'iphone-18-pro', cat:'iphone', icon:'i-case3', preorder:true, keywords:'ايفون 18 برو ماكس بروبقندي عنابي اسود iphone 18 pro max burgundy black', name:'iPhone 18 Pro Max', desc:'متوفر للطلب المسبق — تصميم تيتانيوم وكاميرا احترافية ثلاثية.', price:6499, stock:0, specs:{'الحالة':'متوفر للطلب المسبق','الشاشة':'6.9 بوصة Super Retina XDR','الكاميرا':'ثلاثية احترافية','الذاكرة':'256GB / 512GB / 1TB'}, colors:['#6B2233','#1A1A1C'], colorNames:{'#6B2233':'بروبقندي','#1A1A1C':'أسود'}, colorGallery:{'#6B2233':['i18-burgundy-1','i18-burgundy-2','i18-burgundy-3'],'#1A1A1C':['i18-black-1','i18-black-2','i18-black-3']}, gallery:['i18-burgundy-1','i18-burgundy-2','i18-burgundy-3','i18-black-1','i18-black-2','i18-black-3']},
+  {id:'ip-clear',   cat:'accessories', icon:'i-case',   name:'جراب شفاف مضاد للاصفرار', desc:'حواف مرتفعة للكاميرا والشاشة، شفافية تدوم.', price:59, was:79, stock:20, specs:{'التوافق':'iPhone 14 – 16 Pro Max','الخامة':'TPU + بولي كربونات','المغناطيس':'مدعوم'}, colors:['#E9EDF3','#2563EB','#111318']},
+  {id:'ip-silk',    cat:'accessories', icon:'i-case2',  name:'جراب سيليكون بملمس حريري', desc:'ناعم بين اليد وبطانة مخملية تحمي الجهاز من الخدوش.', price:69, stock:14, specs:{'التوافق':'iPhone 15 – 16 Pro Max','الخامة':'سيليكون سائل','المغناطيس':'مدعوم'}, colors:['#111318','#2563EB','#E9EDF3']},
+  {id:'mag15',      cat:'accessories', icon:'i-charger',name:'شاحن مغناطيسي لاسلكي 15W', desc:'يثبت على ظهر الجهاز ويشحن بأقصى سرعة لاسلكية.', price:89, stock:12, specs:{'القدرة':'15W','الطول':'1.5 م','المنفذ':'USB-C'}, colors:['#E9EDF3','#111318']},
+  {id:'buds',       cat:'accessories',     icon:'i-buds',   name:'سماعات لاسلكية بعزل الضجيج', desc:'عزل نشط، 30 ساعة مع العلبة، توصيل بجهازين.', price:199, was:249, stock:15, specs:{'البطارية':'30 ساعة','العزل':'ANC'}, colors:['#E9EDF3','#111318']},
 ];
+
 
 function artHTML(p, cls=''){
   return `<img class="ph ${cls}" src="${STORE.images}/${p.id}.jpg" alt="" loading="lazy" onerror="this.remove()">${svg(p.icon)}`;
